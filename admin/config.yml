@@ -47,7 +47,7 @@ collections:
     fields:
       - { name: title, label: Project name, widget: string, hint: "Also sets the page address, e.g. Slow Leaf → /work/slow-leaf/" }
       - { name: order, label: Order, widget: number, value_type: int, default: 99, hint: "1 appears first." }
-      - { name: concept, label: Self-initiated concept, widget: boolean, default: false, hint: "On: labelled as a brand concept, not client work. Turn off for real client projects." }
+      - { name: concept, label: Self-initiated concept, widget: boolean, default: false, hint: "On: labelled as a brand concept. Off: real client work, listed first and laid out as problem → one idea → system → result." }
       - { name: show_on_home, label: Show on home page, widget: boolean, default: false }
       - { name: draft, label: Hide from site, widget: boolean, default: false, required: false }
       - { name: sector, label: Sector, widget: string, hint: "Short, e.g. Single-estate tea" }
@@ -57,11 +57,11 @@ collections:
         multiple: true
         options: ["Brand strategy", "Branding", "Packaging design"]
       - { name: tagline, label: One-line summary, widget: string, hint: "The sentence that sells the idea. Shown on cards and at the top of the case study." }
-      - { name: challenge, label: The challenge / brief, widget: text }
+      - { name: challenge, label: The problem / brief, widget: text }
       - { name: insight, label: The insight, widget: text, required: false }
-      - { name: idea, label: The idea, widget: text }
-      - { name: outcome, label: The outcome / aim, widget: text, hint: "One strong sentence." }
-      - { name: deliverables, label: What we made, widget: list, field: { name: item, label: Item, widget: string } }
+      - { name: idea, label: The one idea, widget: text }
+      - { name: outcome, label: The result / aim, widget: text, hint: "One strong sentence. For client work, lead with the measurable change." }
+      - { name: deliverables, label: The system (what we made), widget: list, field: { name: item, label: Item, widget: string } }
       - { name: cover_image, label: Cover image (landscape), widget: image, hint: "Main image: home card, case study hero, next-project link. Landscape, about 2000×1125." }
       - { name: gallery_image, label: Work gallery image, widget: image, required: false, hint: "Optional. The tile on the Work page. Uses the cover image if empty." }
       - { name: range_image, label: Wide image, widget: image, required: false, hint: "Full-width shot, e.g. the whole range. About 2400×1030." }
@@ -128,6 +128,49 @@ collections:
               - { name: line, label: One-liner, widget: string }
               - { name: text, label: Description, widget: text }
               - { name: includes, label: Includes, widget: list, field: { name: item, label: Item, widget: string } }
+          - { name: offers_label, label: Offers label, widget: string }
+          - { name: offers_heading, label: Offers heading, widget: text }
+          - { name: offers_text, label: Offers intro, widget: text }
+          - name: offers
+            label: Offers
+            widget: list
+            summary: "{{name}} · {{price}}"
+            hint: "The first offer is highlighted in blue."
+            fields:
+              - { name: name, label: Offer name, widget: string }
+              - { name: text, label: Description, widget: text }
+              - { name: timeline, label: Timeline, widget: string }
+              - { name: price, label: Price, widget: string, hint: "For the Shelf Check, keep this the same as on the Shelf Check page." }
+              - { name: note, label: Small note, widget: string, required: false }
+              - { name: link, label: Link, widget: string, required: false, hint: "Optional, e.g. /shelf-check/. If empty, the card opens the contact form with this offer selected." }
+          - { name: offers_primary, label: Offers main button, widget: string }
+          - { name: offers_secondary, label: Offers second button, widget: string }
+          - { name: faq_label, label: FAQ label, widget: string }
+          - { name: faq_heading, label: FAQ heading, widget: text }
+          - name: faq
+            label: FAQ
+            widget: list
+            summary: "{{q}}"
+            fields:
+              - { name: q, label: Question, widget: string }
+              - { name: a, label: Answer, widget: text }
+
+      - name: shelf-check
+        label: Shelf Check
+        file: content/shelf-check.json
+        fields:
+          - { name: seo_title, label: Browser and Google title, widget: string }
+          - { name: seo_description, label: Google description, widget: text }
+          - { name: label, label: Label, widget: string }
+          - { name: heading, label: Heading, widget: text }
+          - { name: lead, label: Intro, widget: text }
+          - { name: image, label: Image, widget: image, required: false, hint: "Wide image, e.g. packs side by side. About 2400×1030." }
+          - { name: includes_label, label: List label, widget: string }
+          - { name: includes, label: What you get, widget: list, field: { name: item, label: Item, widget: string } }
+          - { name: price, label: Price, widget: string, hint: "Keep this the same as the Shelf Check price in Home → Offers." }
+          - { name: duration, label: Duration, widget: string }
+          - { name: credit_note, label: Credit note, widget: text }
+          - { name: button, label: Button text, widget: string }
 
       - name: about
         label: About
@@ -178,7 +221,11 @@ collections:
           - { name: heading, label: Heading, widget: text }
           - { name: lead, label: Intro, widget: text }
           - { name: needs_label, label: Services question, widget: string }
-          - { name: needs, label: Service options, widget: list, field: { name: option, label: Option, widget: string } }
+          - { name: needs, label: Service options, widget: list, field: { name: option, label: Option, widget: string }, hint: "Links from offers select the option with the same name." }
+          - { name: skus_label, label: SKU question, widget: string }
+          - { name: skus, label: SKU options, widget: list, field: { name: option, label: Option, widget: string } }
+          - { name: timeline_label, label: Timeline question, widget: string }
+          - { name: timeline, label: Timeline options, widget: list, field: { name: option, label: Option, widget: string } }
           - { name: message_placeholder, label: Message hint, widget: string }
           - { name: button, label: Button text, widget: string }
           - { name: form_note, label: Note under the button, widget: string }
@@ -204,4 +251,6 @@ collections:
           - { name: behance, label: Behance link, widget: string, required: false, hint: "Leave empty to hide." }
           - { name: footer_label, label: Footer label, widget: string }
           - { name: footer_heading, label: Footer heading, widget: text }
-          - { name: footer_button, label: Footer button, widget: string }
+          - { name: nav_cta, label: Top menu button, widget: string, hint: "Links to the Shelf Check page. Phones show 'Shelf Check'." }
+          - { name: footer_button, label: Footer main button, widget: string, hint: "Links to the Shelf Check page." }
+          - { name: footer_secondary, label: Footer second button, widget: string, hint: "Links to the contact page." }

@@ -1,8 +1,8 @@
 {
   "seo_title": "About — Sharp Story",
-  "seo_description": "Sharp Story is an independent branding and creative studio for ambitious startups and impact-driven businesses. How we think and how we work.",
+  "seo_description": "Sharp Story is an independent branding and packaging studio for D2C and FMCG brands. How we think and how we work.",
   "heading": "One habit:\ncutting.",
-  "lead": "Sharp Story is an independent branding and creative studio. We help ambitious startups and impact-driven businesses build brands that are clear in purpose, distinct in look and made to last.",
+  "lead": "Sharp Story is an independent branding and packaging studio. We help D2C and FMCG brands build brands that are clear in purpose, distinct on shelf and on screen, and made to last.",
   "statement": "A brand is a promise you can say in one sentence.",
   "story": [
     "Most brands don’t struggle from having too little to say. They struggle from saying too much: a purpose, three taglines and a look borrowed from the category leader. Our work starts by taking things away.",
@@ -15,12 +15,12 @@
   "audience_label": "Who we work with",
   "audiences": [
     {
-      "title": "Ambitious startups",
-      "text": "Founders building something new who want a brand as considered as the product, from the first day it meets a customer."
+      "title": "D2C brands",
+      "text": "Founders launching or growing a product brand who need it to stand out in a crowded feed, a marketplace grid and a quick-commerce thumbnail."
     },
     {
-      "title": "Impact-driven businesses",
-      "text": "Companies doing good work that deserve to be noticed for it, without sounding like everyone else who claims the same values."
+      "title": "FMCG and family businesses",
+      "text": "Established brands with real distribution and a range that has grown faster than its packaging. We bring the system back without losing the recall."
     }
   ],
   "principles_label": "How we think",

@@ -1,8 +1,8 @@
 {
   "title": "Ledger",
-  "order": 3,
+  "order": 6,
   "concept": true,
-  "show_on_home": true,
+  "show_on_home": false,
   "sector": "Small business finance",
   "services": [
     "Brand strategy",

@@ -1,8 +1,8 @@
 {
   "title": "Pressed",
-  "order": 5,
+  "order": 3,
   "concept": true,
-  "show_on_home": false,
+  "show_on_home": true,
   "sector": "Cold-pressed oils",
   "services": [
     "Branding",
