@@ -1,0 +1,34 @@
+{
+  "title": "Ledger",
+  "order": 3,
+  "concept": true,
+  "show_on_home": true,
+  "sector": "Small business finance",
+  "services": [
+    "Brand strategy",
+    "Branding"
+  ],
+  "tagline": "Money, made plain.",
+  "challenge": "A finance tool for small business owners, launching into a category of blue gradients, abstract icons and promises of “financial freedom”.",
+  "insight": "Owners didn’t want to feel excited about their accounts. They wanted to feel in control, the way a good accountant makes you feel.",
+  "idea": "We made clarity the brand. A plain-spoken voice, a grid borrowed from traditional ledger books, and one bold colour used with discipline across product, website and pitch.",
+  "outcome": "A finance brand that sounds like a trusted adviser, not a sales pitch.",
+  "deliverables": [
+    "Positioning and messaging",
+    "Identity and tone of voice",
+    "Product and web design system",
+    "Investor deck"
+  ],
+  "cover_image": "/img/ledger-1.webp",
+  "gallery_image": "/img/ledger-6.webp",
+  "range_image": "/img/ledger-5.webp",
+  "range_caption": "Product screens",
+  "detail_image": "/img/ledger-2.webp",
+  "detail_caption": "Up close",
+  "poster_image": "/img/ledger-6.webp",
+  "poster_caption": "Launch poster",
+  "identity_image": "/img/ledger-3.webp",
+  "identity_caption": "Identity system",
+  "stationery_image": "/img/ledger-4.webp",
+  "stationery_caption": "Stationery and collateral"
+}

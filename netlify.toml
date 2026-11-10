@@ -1,5 +1,7 @@
+# Netlify builds the site from content/ on every change (including edits made in /admin).
 [build]
-  publish = "."
+  command = "python3 build.py"
+  publish = "dist"
 
 [[headers]]
   for = "/img/*"
@@ -12,4 +14,11 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
     X-Frame-Options = "SAMEORIGIN"
-    Content-Security-Policy = "script-src 'unsafe-inline'"
+    # Only inline scripts and the content editor's script may run. This also keeps
+    # Netlify's "Powered by Netlify" badge script from loading.
+    Content-Security-Policy = "script-src 'unsafe-inline' https://unpkg.com; worker-src 'self' blob:"
+
+[[headers]]
+  for = "/admin/*"
+  [headers.values]
+    Cache-Control = "no-cache"

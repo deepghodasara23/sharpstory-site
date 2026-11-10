@@ -1,0 +1,35 @@
+{
+  "title": "Second Thread",
+  "order": 4,
+  "concept": true,
+  "show_on_home": true,
+  "sector": "Upcycled fashion",
+  "services": [
+    "Brand strategy",
+    "Branding",
+    "Packaging design"
+  ],
+  "tagline": "Nothing new. Everything considered.",
+  "challenge": "A label turning deadstock and offcut fabric into limited runs of clothing. The story was strong, but the brand looked like a craft project and couldn’t hold its price beside premium fashion.",
+  "insight": "The customers it wanted bought on craft and scarcity first. Sustainability was the reason to trust the label, not the reason to buy.",
+  "idea": "We positioned Second Thread as a premium label that happens to waste nothing. A refined identity, numbered tags that trace each fabric’s history, and mailers made from the same offcuts as the clothes.",
+  "outcome": "A label that sells on desire and proves its values in the details.",
+  "deliverables": [
+    "Brand strategy and naming support",
+    "Identity system",
+    "Numbered garment tags",
+    "Offcut mailers and boxes"
+  ],
+  "cover_image": "/img/second-thread-1.webp",
+  "gallery_image": "/img/second-thread-1.webp",
+  "range_image": "/img/second-thread-5.webp",
+  "range_caption": "Numbered garment tags",
+  "detail_image": "/img/second-thread-2.webp",
+  "detail_caption": "Up close",
+  "poster_image": "/img/second-thread-6.webp",
+  "poster_caption": "Launch poster",
+  "identity_image": "/img/second-thread-3.webp",
+  "identity_caption": "Identity system",
+  "stationery_image": "/img/second-thread-4.webp",
+  "stationery_caption": "Stationery and collateral"
+}

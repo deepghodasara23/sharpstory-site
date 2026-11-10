@@ -1,0 +1,33 @@
+{
+  "title": "Pressed",
+  "order": 5,
+  "concept": true,
+  "show_on_home": false,
+  "sector": "Cold-pressed oils",
+  "services": [
+    "Branding",
+    "Packaging design"
+  ],
+  "tagline": "Honest oil, labelled honestly.",
+  "challenge": "A small press working with farming families, with a genuinely better process. Its label hid that process behind farmland clichés and gold foil, the same story every competitor told.",
+  "insight": "Shoppers had stopped believing words like “pure” and “natural”. What they trusted was evidence they could check for themselves.",
+  "idea": "We let the facts do the talking. One typographic label lists what’s in the bottle, the pressing date and the farm it came from, set with the precision of a lab sample. Nothing decorative: the information is the design.",
+  "outcome": "A label people actually read, and trust earned by telling the truth.",
+  "deliverables": [
+    "Identity",
+    "Bottle and label system",
+    "Shipper and stationery"
+  ],
+  "cover_image": "/img/pressed-1.webp",
+  "gallery_image": "/img/pressed-3.webp",
+  "range_image": "/img/pressed-5.webp",
+  "range_caption": "The bottle range",
+  "detail_image": "/img/pressed-2.webp",
+  "detail_caption": "Up close",
+  "poster_image": "/img/pressed-6.webp",
+  "poster_caption": "Launch poster",
+  "identity_image": "/img/pressed-3.webp",
+  "identity_caption": "Identity system",
+  "stationery_image": "/img/pressed-4.webp",
+  "stationery_caption": "Stationery and collateral"
+}

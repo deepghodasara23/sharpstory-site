@@ -1,0 +1,33 @@
+{
+  "title": "Little Orbit",
+  "order": 6,
+  "concept": true,
+  "show_on_home": false,
+  "sector": "Learning toys",
+  "services": [
+    "Branding",
+    "Packaging design"
+  ],
+  "tagline": "Learning, wrapped in play.",
+  "challenge": "A learning-toy startup founded by two teachers. On a loud toy shelf, its packaging shouted as hard as everything around it, and parents couldn’t tell it was different.",
+  "insight": "In the aisle, parents choose for the child but buy with their own judgement. The pack had to reassure the adult and delight the child at the same time.",
+  "idea": "A calm, curious identity built from simple shapes a child can name, with clear learning outcomes for parents on the back. The box opens into the first game, so the packaging becomes part of play.",
+  "outcome": "A range that stands out in a loud aisle by being the calm one.",
+  "deliverables": [
+    "Identity and character system",
+    "Packaging range",
+    "Retail display"
+  ],
+  "cover_image": "/img/little-orbit-1.webp",
+  "gallery_image": "/img/little-orbit-2.webp",
+  "range_image": "/img/little-orbit-5.webp",
+  "range_caption": "The packaging range",
+  "detail_image": "/img/little-orbit-2.webp",
+  "detail_caption": "Up close",
+  "poster_image": "/img/little-orbit-6.webp",
+  "poster_caption": "Launch poster",
+  "identity_image": "/img/little-orbit-3.webp",
+  "identity_caption": "Identity system",
+  "stationery_image": "/img/little-orbit-4.webp",
+  "stationery_caption": "Stationery and collateral"
+}

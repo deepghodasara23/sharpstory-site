@@ -1,0 +1,35 @@
+{
+  "title": "Common Ground",
+  "order": 2,
+  "concept": true,
+  "show_on_home": true,
+  "sector": "Refill home care",
+  "services": [
+    "Brand strategy",
+    "Branding",
+    "Packaging design"
+  ],
+  "tagline": "Refill, made the obvious choice.",
+  "challenge": "A refill-first cleaning brand with a real environmental case, dressed in the same muted greens as every other eco brand. Easy to approve of, and just as easy to forget.",
+  "insight": "People don’t switch to refills to feel virtuous. They switch when it’s easier, and when it looks better at home than the bottle it replaces.",
+  "idea": "We built the brand around ownership, not sacrifice. A forever bottle designed to stay out on the counter, bold refill pouches that read as one system, and a voice that’s confident rather than preachy.",
+  "outcome": "Sustainability people choose for the design, not despite it.",
+  "deliverables": [
+    "Brand positioning and voice",
+    "Identity system",
+    "Forever bottle and refill pouches",
+    "Launch toolkit"
+  ],
+  "cover_image": "/img/common-ground-1.webp",
+  "gallery_image": "/img/common-ground-2.webp",
+  "range_image": "/img/common-ground-5.webp",
+  "range_caption": "Forever bottle and refill pouches",
+  "detail_image": "/img/common-ground-2.webp",
+  "detail_caption": "Up close",
+  "poster_image": "/img/common-ground-6.webp",
+  "poster_caption": "Launch poster",
+  "identity_image": "/img/common-ground-3.webp",
+  "identity_caption": "Identity system",
+  "stationery_image": "/img/common-ground-4.webp",
+  "stationery_caption": "Stationery and collateral"
+}

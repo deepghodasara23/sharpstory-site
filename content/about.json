@@ -1,0 +1,65 @@
+{
+  "seo_title": "About — Sharp Story",
+  "seo_description": "Sharp Story is an independent branding and creative studio for ambitious startups and impact-driven businesses. How we think and how we work.",
+  "heading": "One habit:\ncutting.",
+  "lead": "Sharp Story is an independent branding and creative studio. We help ambitious startups and impact-driven businesses build brands that are clear in purpose, distinct in look and made to last.",
+  "statement": "A brand is a promise you can say in one sentence.",
+  "story": [
+    "Most brands don’t struggle from having too little to say. They struggle from saying too much: a purpose, three taglines and a look borrowed from the category leader. Our work starts by taking things away.",
+    "We combine research, strategic thinking and purposeful creativity. We listen first, find the one idea a brand can own, then build the identity and packaging around it, so every detail points the same way.",
+    "We’re independent by choice. The people you meet are the people doing the work, and we take on a small number of projects so each one gets our full attention."
+  ],
+  "founder_name": "Deep",
+  "founder_role": "Founder, Sharp Story",
+  "founder_photo": "",
+  "audience_label": "Who we work with",
+  "audiences": [
+    {
+      "title": "Ambitious startups",
+      "text": "Founders building something new who want a brand as considered as the product, from the first day it meets a customer."
+    },
+    {
+      "title": "Impact-driven businesses",
+      "text": "Companies doing good work that deserve to be noticed for it, without sounding like everyone else who claims the same values."
+    }
+  ],
+  "principles_label": "How we think",
+  "principles": [
+    {
+      "title": "Research first",
+      "text": "Good branding starts with what’s true about the business, the market and the people it serves. We find that before we design anything."
+    },
+    {
+      "title": "One idea",
+      "text": "A brand that says one thing clearly will beat one that says everything. We find the idea worth owning and cut the rest."
+    },
+    {
+      "title": "Purposeful craft",
+      "text": "Every colour, word and fold should earn its place. Restraint is harder than decoration, and it lasts longer."
+    },
+    {
+      "title": "Built to grow",
+      "text": "We design systems, not one-offs, so the brand holds up from the first pack to the hundredth product."
+    }
+  ],
+  "process_label": "The process",
+  "process_heading": "How a brand gets sharp",
+  "process": [
+    {
+      "title": "Listen",
+      "text": "Workshops, interviews and research into the business, the category and the customer."
+    },
+    {
+      "title": "Cut",
+      "text": "Purpose, positioning and the one idea the brand will own, agreed before design begins."
+    },
+    {
+      "title": "Shape",
+      "text": "Identity and packaging designed together as one system, and tested where the brand will live."
+    },
+    {
+      "title": "Launch",
+      "text": "Guidelines, files and support, so your team can keep the brand sharp without us."
+    }
+  ]
+}

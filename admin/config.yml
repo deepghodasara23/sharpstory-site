@@ -1,0 +1,207 @@
+# Sharp Story content manager (Sveltia CMS)
+# Everything here edits files in the content/ folder of the GitHub repository.
+# Publishing commits the change; Netlify rebuilds the site in about a minute.
+
+backend:
+  name: github
+  repo: deepghodasara23/sharpstory-site
+  branch: main
+  commit_messages:
+    create: "Add {{collection}}: {{slug}}"
+    update: "Update {{collection}}: {{slug}}"
+    delete: "Remove {{collection}}: {{slug}}"
+    uploadMedia: "Upload {{path}}"
+    deleteMedia: "Delete {{path}}"
+
+site_url: https://sharpstory.studio
+display_url: https://sharpstory.studio
+logo:
+  src: /favicon.svg
+
+media_folder: static/img/uploads
+public_folder: /img/uploads
+
+slug:
+  encoding: ascii
+  clean_accents: true
+  sanitize_replacement: "-"
+
+collections:
+  # ---------------------------------------------------------------- Work
+  - name: projects
+    label: Work
+    label_singular: Project
+    description: Case studies and brand concepts. Order controls their position on the Work page; the first ones marked "Show on home" appear on the home page.
+    folder: content/projects
+    extension: json
+    format: json
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    identifier_field: title
+    summary: "{{order}}. {{title}} · {{sector}}"
+    sortable_fields: [order, title]
+    view_filters:
+      - { label: "Brand concepts", field: concept, pattern: true }
+      - { label: "Client work", field: concept, pattern: false }
+    fields:
+      - { name: title, label: Project name, widget: string, hint: "Also sets the page address, e.g. Slow Leaf → /work/slow-leaf/" }
+      - { name: order, label: Order, widget: number, value_type: int, default: 99, hint: "1 appears first." }
+      - { name: concept, label: Self-initiated concept, widget: boolean, default: false, hint: "On: labelled as a brand concept, not client work. Turn off for real client projects." }
+      - { name: show_on_home, label: Show on home page, widget: boolean, default: false }
+      - { name: draft, label: Hide from site, widget: boolean, default: false, required: false }
+      - { name: sector, label: Sector, widget: string, hint: "Short, e.g. Single-estate tea" }
+      - name: services
+        label: Services
+        widget: select
+        multiple: true
+        options: ["Brand strategy", "Branding", "Packaging design"]
+      - { name: tagline, label: One-line summary, widget: string, hint: "The sentence that sells the idea. Shown on cards and at the top of the case study." }
+      - { name: challenge, label: The challenge / brief, widget: text }
+      - { name: insight, label: The insight, widget: text, required: false }
+      - { name: idea, label: The idea, widget: text }
+      - { name: outcome, label: The outcome / aim, widget: text, hint: "One strong sentence." }
+      - { name: deliverables, label: What we made, widget: list, field: { name: item, label: Item, widget: string } }
+      - { name: cover_image, label: Cover image (landscape), widget: image, hint: "Main image: home card, case study hero, next-project link. Landscape, about 2000×1125." }
+      - { name: gallery_image, label: Work gallery image, widget: image, required: false, hint: "Optional. The tile on the Work page. Uses the cover image if empty." }
+      - { name: range_image, label: Wide image, widget: image, required: false, hint: "Full-width shot, e.g. the whole range. About 2400×1030." }
+      - { name: range_caption, label: Wide image caption, widget: string, required: false }
+      - { name: detail_image, label: Close-up image (portrait), widget: image, required: false, hint: "Also used as the hero on phones and in the Work index preview. About 1200×1500." }
+      - { name: detail_caption, label: Close-up caption, widget: string, required: false }
+      - { name: poster_image, label: Second portrait image, widget: image, required: false, hint: "Poster, campaign or another detail. About 1200×1500." }
+      - { name: poster_caption, label: Second portrait caption, widget: string, required: false }
+      - { name: identity_image, label: Identity image, widget: image, required: false, hint: "Logo or identity board. About 1600×1200." }
+      - { name: identity_caption, label: Identity caption, widget: string, required: false }
+      - { name: stationery_image, label: Supporting image, widget: image, required: false, hint: "Stationery, collateral or packaging detail. About 1800×1350." }
+      - { name: stationery_caption, label: Supporting image caption, widget: string, required: false }
+
+  # ---------------------------------------------------------------- Journal
+  - name: articles
+    label: Journal
+    label_singular: Article
+    folder: content/articles
+    extension: json
+    format: json
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    identifier_field: title
+    summary: "{{title}} · {{category}} · {{date | date('YYYY-MM-DD')}}"
+    sortable_fields: [date, title]
+    fields:
+      - { name: title, label: Title, widget: string }
+      - { name: date, label: Publish date, widget: datetime, time_format: false, date_format: "YYYY-MM-DD", format: "YYYY-MM-DD", hint: "Newest first on the Journal page." }
+      - { name: category, label: Category, widget: select, options: ["Strategy", "Branding", "Packaging", "Process", "Studio"] }
+      - { name: read_time, label: Read time, widget: string, default: "5 min read" }
+      - { name: featured, label: Featured article, widget: boolean, default: false, hint: "Shown large at the top of the Journal. If several are on, the newest wins." }
+      - { name: draft, label: Hide from site, widget: boolean, default: false, required: false }
+      - { name: excerpt, label: Short summary, widget: text, hint: "One or two sentences. Also used for Google and link previews." }
+      - { name: image, label: Main image, widget: image, required: false }
+      - { name: body, label: Article, widget: markdown, buttons: [bold, italic, link, heading-two, heading-three, bulleted-list, numbered-list, quote], hint: "Separate paragraphs with a blank line." }
+
+  # ---------------------------------------------------------------- Pages
+  - name: pages
+    label: Pages
+    description: Text on the main pages. In headings, each new line starts a new line on the page.
+    editor: { preview: false }
+    files:
+      - name: home
+        label: Home
+        file: content/home.json
+        fields:
+          - { name: seo_title, label: Browser and Google title, widget: string }
+          - { name: hero_heading, label: Hero heading, widget: text }
+          - { name: hero_text, label: Hero text, widget: text }
+          - { name: hero_label, label: Corner label, widget: string }
+          - { name: manifesto_heading, label: Statement heading, widget: text }
+          - { name: manifesto_text, label: Statement text, widget: text }
+          - { name: featured_count, label: Projects on home page, widget: number, value_type: int, min: 1, max: 8, default: 4 }
+          - { name: all_work_label, label: Label above "All work", widget: string }
+          - { name: services_label, label: Services label, widget: string }
+          - { name: services_heading, label: Services heading, widget: text }
+          - name: services
+            label: Services
+            widget: list
+            summary: "{{title}}"
+            fields:
+              - { name: title, label: Service, widget: string }
+              - { name: line, label: One-liner, widget: string }
+              - { name: text, label: Description, widget: text }
+              - { name: includes, label: Includes, widget: list, field: { name: item, label: Item, widget: string } }
+
+      - name: about
+        label: About
+        file: content/about.json
+        fields:
+          - { name: seo_title, label: Browser and Google title, widget: string }
+          - { name: seo_description, label: Google description, widget: text }
+          - { name: heading, label: Heading, widget: text }
+          - { name: lead, label: Intro, widget: text }
+          - { name: statement, label: Statement, widget: string }
+          - { name: story, label: Studio story, widget: list, field: { name: paragraph, label: Paragraph, widget: text } }
+          - { name: founder_name, label: Founder name, widget: string }
+          - { name: founder_role, label: Founder role, widget: string }
+          - { name: founder_photo, label: Founder photo, widget: image, required: false, hint: "Portrait. Leave empty to show the blue shape." }
+          - { name: audience_label, label: Audience label, widget: string }
+          - { name: audiences, label: Who we work with, widget: list, summary: "{{title}}", fields: [{ name: title, label: Title, widget: string }, { name: text, label: Text, widget: text }] }
+          - { name: principles_label, label: Principles label, widget: string }
+          - { name: principles, label: How we think, widget: list, summary: "{{title}}", fields: [{ name: title, label: Title, widget: string }, { name: text, label: Text, widget: text }] }
+          - { name: process_label, label: Process label, widget: string }
+          - { name: process_heading, label: Process heading, widget: string }
+          - { name: process, label: Process steps, widget: list, summary: "{{title}}", fields: [{ name: title, label: Step, widget: string }, { name: text, label: Text, widget: text }] }
+
+      - name: work
+        label: Work page
+        file: content/work.json
+        fields:
+          - { name: seo_title, label: Browser and Google title, widget: string }
+          - { name: seo_description, label: Google description, widget: text }
+          - { name: heading, label: Heading, widget: text }
+          - { name: lead, label: Intro, widget: text }
+
+      - name: journal
+        label: Journal page
+        file: content/journal.json
+        fields:
+          - { name: seo_title, label: Browser and Google title, widget: string }
+          - { name: seo_description, label: Google description, widget: text }
+          - { name: heading, label: Heading, widget: text }
+          - { name: lead, label: Intro, widget: text }
+          - { name: more_label, label: Label above the article list, widget: string }
+
+      - name: contact
+        label: Contact
+        file: content/contact.json
+        fields:
+          - { name: seo_title, label: Browser and Google title, widget: string }
+          - { name: seo_description, label: Google description, widget: text }
+          - { name: heading, label: Heading, widget: text }
+          - { name: lead, label: Intro, widget: text }
+          - { name: needs_label, label: Services question, widget: string }
+          - { name: needs, label: Service options, widget: list, field: { name: option, label: Option, widget: string } }
+          - { name: message_placeholder, label: Message hint, widget: string }
+          - { name: button, label: Button text, widget: string }
+          - { name: form_note, label: Note under the button, widget: string }
+          - { name: success_message, label: Thank-you message, widget: string }
+          - { name: next_heading, label: Next steps heading, widget: string }
+          - { name: next_steps, label: Next steps, widget: list, field: { name: step, label: Step, widget: string } }
+
+  # ---------------------------------------------------------------- Settings
+  - name: settings
+    label: Settings
+    editor: { preview: false }
+    files:
+      - name: site
+        label: Contact details, links and footer
+        file: content/settings.json
+        fields:
+          - { name: site_name, label: Studio name, widget: string }
+          - { name: domain, label: Website address, widget: string, hint: "Used for Google and link previews. Change only if the domain changes." }
+          - { name: seo_description, label: Default Google description, widget: text }
+          - { name: email, label: Studio email, widget: string }
+          - { name: instagram, label: Instagram link, widget: string, required: false, hint: "Leave empty to hide." }
+          - { name: linkedin, label: LinkedIn link, widget: string, required: false, hint: "Leave empty to hide." }
+          - { name: behance, label: Behance link, widget: string, required: false, hint: "Leave empty to hide." }
+          - { name: footer_label, label: Footer label, widget: string }
+          - { name: footer_heading, label: Footer heading, widget: text }
+          - { name: footer_button, label: Footer button, widget: string }

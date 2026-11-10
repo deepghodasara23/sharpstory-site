@@ -1,0 +1,23 @@
+{
+  "seo_title": "Start a project — Sharp Story",
+  "seo_description": "Start a project with Sharp Story. Tell us what you’re building and we’ll reply personally.",
+  "heading": "Let’s make\nsomething sharp.",
+  "lead": "Tell us what you’re building and where you want it to go. We take on a small number of projects at a time, so every enquiry is read and answered personally.",
+  "needs_label": "What can we help with?",
+  "needs": [
+    "Brand strategy",
+    "Branding",
+    "Packaging design",
+    "All three"
+  ],
+  "message_placeholder": "What you do, what’s changing, and what you need the brand to do next.",
+  "button": "Send the brief",
+  "form_note": "Every brief is read and answered personally.",
+  "success_message": "Thank you. Your brief is with us, and we’ll be in touch personally.",
+  "next_heading": "What happens next",
+  "next_steps": [
+    "We read your brief and come back with a few questions.",
+    "A call to understand the business, the ambition and what’s in the way.",
+    "A proposal with approach, scope, timeline and investment."
+  ]
+}

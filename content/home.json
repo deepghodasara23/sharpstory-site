@@ -1,0 +1,47 @@
+{
+  "seo_title": "Sharp Story — Independent branding studio",
+  "hero_heading": "Brands, cut down\nto one idea.",
+  "hero_text": "Sharp Story is an independent branding studio for ambitious startups and impact-driven businesses.",
+  "hero_label": "Branding studio",
+  "manifesto_heading": "We cut until\none idea\nis left.",
+  "manifesto_text": "Every strong brand stands on one clear idea. We find it through research, sharpen it through strategy and bring it to life through identity and packaging, so the brand is easy to understand, hard to copy and built to last.",
+  "featured_count": 4,
+  "all_work_label": "Six brand concepts",
+  "services_label": "What we do",
+  "services_heading": "Three disciplines.\nOne idea running through them.",
+  "services": [
+    {
+      "title": "Brand strategy",
+      "line": "The thinking everything else stands on.",
+      "text": "We research the business, the market and the people it serves, then define the purpose, positioning and story the brand will own.",
+      "includes": [
+        "Research and insight",
+        "Purpose and positioning",
+        "Brand story and messaging",
+        "Naming support"
+      ]
+    },
+    {
+      "title": "Branding",
+      "line": "An identity people recognise before they read it.",
+      "text": "We turn the strategy into a complete visual and verbal system that holds up everywhere the brand appears.",
+      "includes": [
+        "Logo and visual identity",
+        "Typography and colour",
+        "Tone of voice",
+        "Brand guidelines"
+      ]
+    },
+    {
+      "title": "Packaging design",
+      "line": "Where the brand is held, opened and judged.",
+      "text": "We design packaging as part of the brand system, from structure and materials to the moment someone opens it.",
+      "includes": [
+        "Structure and materials",
+        "Range and label systems",
+        "Print and finish",
+        "Unboxing experience"
+      ]
+    }
+  ]
+}

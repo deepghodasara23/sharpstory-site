@@ -1,0 +1,35 @@
+{
+  "title": "Slow Leaf",
+  "order": 1,
+  "concept": true,
+  "show_on_home": true,
+  "sector": "Single-estate tea",
+  "services": [
+    "Brand strategy",
+    "Branding",
+    "Packaging design"
+  ],
+  "tagline": "A tea brand for people willing to wait.",
+  "challenge": "A young tea company buying direct from small single estates and paying growers well above market. Its tin looked like every other tin on the shelf, so customers couldn’t see why it cost more.",
+  "insight": "Their most loyal customers weren’t buying tea for the caffeine. They were buying ten quiet minutes in the day. The slowness was the product.",
+  "idea": "We positioned Slow Leaf around the pleasure of waiting. An unhurried wordmark, a tin that opens in two deliberate stages, and the grower’s name and harvest date printed under every lid. The pack slows you down the way the tea does.",
+  "outcome": "A brand that explains its price before anyone has to.",
+  "deliverables": [
+    "Positioning and brand story",
+    "Wordmark and identity system",
+    "Two-stage tin and gift box",
+    "Brand guidelines"
+  ],
+  "cover_image": "/img/slow-leaf-1.webp",
+  "gallery_image": "/img/slow-leaf-1.webp",
+  "range_image": "/img/slow-leaf-5.webp",
+  "range_caption": "The full range of tins",
+  "detail_image": "/img/slow-leaf-2.webp",
+  "detail_caption": "Up close",
+  "poster_image": "/img/slow-leaf-6.webp",
+  "poster_caption": "Launch poster",
+  "identity_image": "/img/slow-leaf-3.webp",
+  "identity_caption": "Identity system",
+  "stationery_image": "/img/slow-leaf-4.webp",
+  "stationery_caption": "Stationery and collateral"
+}
