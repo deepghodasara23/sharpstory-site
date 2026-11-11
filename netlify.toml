@@ -16,7 +16,7 @@
     X-Frame-Options = "SAMEORIGIN"
     # Only inline scripts and the content editor's script may run. This also keeps
     # Netlify's "Powered by Netlify" badge script from loading.
-    Content-Security-Policy = "script-src 'unsafe-inline' https://unpkg.com; worker-src 'self' blob:"
+    Content-Security-Policy = "script-src 'self' 'unsafe-inline' https://unpkg.com; worker-src 'self' blob:"
 
 [[headers]]
   for = "/admin/*"

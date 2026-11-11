@@ -78,6 +78,54 @@ def img(x):
     return '/' + x.lstrip('./')
 
 
+def img_size(src):
+    """Width and height of a local image (WebP, PNG or JPEG), read with the standard library."""
+    f = os.path.join(ROOT, 'static', img(src).lstrip('/')) if img(src).startswith('/') else ''
+    if not f or not os.path.isfile(f):
+        return None
+    try:
+        with open(f, 'rb') as fh:
+            d = fh.read(65536)
+        if d[:4] == b'RIFF' and d[8:12] == b'WEBP':
+            c = d[12:16]
+            if c == b'VP8X':
+                return (1 + int.from_bytes(d[24:27], 'little'), 1 + int.from_bytes(d[27:30], 'little'))
+            if c == b'VP8 ':
+                return (int.from_bytes(d[26:28], 'little') & 0x3fff, int.from_bytes(d[28:30], 'little') & 0x3fff)
+            if c == b'VP8L':
+                b = int.from_bytes(d[21:25], 'little')
+                return (1 + (b & 0x3fff), 1 + ((b >> 14) & 0x3fff))
+        if d[:8] == b'\x89PNG\r\n\x1a\n':
+            return (int.from_bytes(d[16:20], 'big'), int.from_bytes(d[20:24], 'big'))
+        if d[:2] == b'\xff\xd8':
+            i = 2
+            while i < len(d) - 9:
+                if d[i] != 0xFF:
+                    i += 1
+                    continue
+                m = d[i + 1]
+                if m in (0xC0, 0xC1, 0xC2):
+                    return (int.from_bytes(d[i + 7:i + 9], 'big'), int.from_bytes(d[i + 5:i + 7], 'big'))
+                i += 2 + int.from_bytes(d[i + 2:i + 4], 'big')
+    except Exception:
+        return None
+    return None
+
+
+def img_tag(src, alt, cls='', sizes='100vw'):
+    """An <img> with its real size, lazy loading and a phone-sized version when one exists."""
+    u = img(src)
+    a = ' class="%s"' % cls if cls else ''
+    wh = img_size(src)
+    if wh:
+        a += ' width="%d" height="%d"' % wh
+        m = re.sub(r'\.(webp|jpe?g|png)$', r'-m.\1', u)
+        mw = img_size(m) if m != u else None
+        if mw and mw[0] < wh[0]:
+            a += ' srcset="%s %dw, %s %dw" sizes="%s"' % (at(m), mw[0], at(u), wh[0], sizes)
+    return '<img src="%s" alt="%s" loading="lazy" decoding="async"%s>' % (at(u), at(alt), a)
+
+
 def url_css(x):
     return 'url(%s)' % img(x).replace(' ', '%20').replace('(', '%28').replace(')', '%29')
 
@@ -143,7 +191,7 @@ def social_links(sep):
 # ---------- page sections ----------
 def home_html():
     h = HOME
-    out = ('<header class="hs" id="top"><div class="st" id="st"><div class="gap"><h2 class="d">%s</h2><p>%s</p></div>'
+    out = ('<h1 class="sr">%s</h1>' % t(S.get('site_name', 'Sharp Story') + ': ' + (h.get('hero_text') or ''))) + ('<header class="hs" id="top"><div class="st" id="st"><div class="gap"><h2 class="d">%s</h2><p>%s</p></div>'
            '<div class="hf L" id="L"><svg class="wmb" viewBox="0 0 578.45 61.54" role="img" aria-label="Sharp Story"><use href="#wm"/></svg><p>%s</p></div>'
            '<div class="hf R" id="R"><svg class="wmb" viewBox="0 0 578.45 61.54" aria-hidden="true"><use href="#wm"/></svg><p>Scroll to cut <i></i></p></div></div></header>'
            % (br(h['hero_heading']), t(h['hero_text']), t(h.get('hero_label'))))
@@ -156,7 +204,7 @@ def home_html():
         i = PROJECTS.index(p)
         concept = p.get('concept')
         out += ('<div class="cs %s" data-cur="Open" data-go="case-%s"><div class="tp"><span>%s %s</span><span>%s · %s</span></div>'
-                '<div class="ar" style="background-image:%s"></div><div class="bt"><h3 class="d">%s</h3><p>%s</p></div>'
+                '<div class="ar" data-bg="%s"></div><div class="bt"><h3 class="d">%s</h3><p>%s</p></div>'
                 '<a class="go" href="/work/%s/">%s</a></div>'
                 % ('kwkb'[k % 4], p['slug'], 'Concept' if concept else 'Case study', num(i), t(p['sector']), t(', '.join(p.get('services', []))),
                    at(url_css(p.get('cover_image'))), '<br>'.join(t(w) for w in p['title'].split(' ')), t(p.get('tagline')),
@@ -195,7 +243,7 @@ def services_html():
            % (t(c.get('label')), lines(c['heading']), t(c.get('lead'))))
     rows = ''
     for i, x in enumerate(c.get('services', [])):
-        rows += ('<div class="svc sv2 rv"><span>%s</span><h3 class="d">%s</h3><div><p class="sl">%s</p><p>%s</p>'
+        rows += ('<div class="svc sv2 rv"><span>%s</span><h2 class="d">%s</h2><div><p class="sl">%s</p><p>%s</p>'
                  '<dl class="sfor"><div><dt>For</dt><dd>%s</dd></div><div><dt>Typical timeline</dt><dd>%s</dd></div></dl>'
                  '<span class="lab">What’s included</span><ul>%s</ul></div></div>'
                  % (num(i), t(x['title']), t(x.get('line')), t(x.get('text')), t(x.get('for')), t(x.get('timeline')),
@@ -208,6 +256,13 @@ def services_html():
     return out + call_html()
 
 
+def notfound_html():
+    return ('<section class="pg px sk nf"><span class="lab">404</span><h1 class="d hh mk">%s</h1><p class="lead rv">%s</p>'
+            '<div class="nfb"><a class="fbtn pri" href="/">Go to the home page <span>→</span></a><a class="fbtn" href="/work/">See the work <span>→</span></a>'
+            '<a class="fbtn" href="/book/">Book a free call <span>→</span></a></div></section>'
+            % (lines('Nothing\nhere.'), 'The page you were looking for has moved or never existed.'))
+
+
 def book_html():
     c = BOOK
     pts = ''.join('<li class="rv"><span>%s</span><p>%s</p></li>' % (num(i), t(x)) for i, x in enumerate(c.get('points', [])))
@@ -216,7 +271,7 @@ def book_html():
     return ('<section class="pg px sk bkh"><span class="lab">%s</span><h1 class="d hh mk">%s</h1><p class="lead rv">%s</p></section>'
             '<section class="px sk bkb"><div class="bkg"><div><span class="lab">%s</span><ol class="shl">%s</ol>'
             '<p class="bkn"><a href="%s" target="_blank" rel="noopener">%s ↗</a><a href="/contact/">%s →</a></p></div>'
-            '<div class="bkf rv"><iframe data-src="%s" title="Book a free brand clarity call" loading="lazy"></iframe></div></div></section>'
+            '<div class="bkf rv" data-lenis-prevent><iframe data-src="%s" title="Book a free brand clarity call" loading="lazy"></iframe></div></div></section>'
             % (t(c.get('label')), lines(c['heading']), t(c.get('lead')), t(c.get('points_label')), pts, at(u), t(c.get('fallback')),
                t(c.get('brief_note')), at(embed)))
 
@@ -225,9 +280,9 @@ def work_html():
     w = WORK
     pick = lambda p: p.get('gallery_image') or p.get('cover_image')
     tiles = ''.join(
-        '<a class="tile t%d" href="/work/%s/" data-cur="View" data-t="%s"><div class="im"><img class="v" src="%s" alt="%s" loading="lazy"><span class="no">%s</span></div>'
+        '<a class="tile t%d" href="/work/%s/" data-cur="View" data-t="%s"><div class="im">%s<span class="no">%s</span></div>'
         '<div class="tc"><h3>%s</h3><span>%s</span></div></a>'
-        % (i % 6 + 1, p['slug'], tags(p), at(img(pick(p))), at('%s, %s' % (p['title'], p['sector'].lower())), num(i), t(p['title']), t(p['sector']))
+        % (i % 6 + 1, p['slug'], tags(p), img_tag(pick(p), '%s, %s' % (p['title'], p['sector'].lower()), 'v', '(max-width: 800px) 100vw, 55vw'), num(i), t(p['title']), t(p['sector']))
         for i, p in enumerate(PROJECTS))
     rows = ''.join(
         '<a class="jr ir" href="/work/%s/" data-cur="View" data-t="%s" data-img="%s"><span>%s</span><h3 class="d">%s</h3><span>%s</span><span>%s</span></a>'
@@ -266,7 +321,7 @@ def journal_html():
            % (lines(j['heading']), t(j['lead'])))
     if ARTICLES:
         f = ARTICLES[0]
-        out += ('<section class="cut px sk"><a class="jf hv" href="/journal/%s/" data-cur="Read"><div class="ar2" style="background-image:%s"></div>'
+        out += ('<section class="cut px sk"><a class="jf hv" href="/journal/%s/" data-cur="Read"><div class="ar2" data-bg="%s"></div>'
                 '<div><span class="lab">Featured · %s · %s</span><h2 class="d">%s</h2><p>%s</p><span class="lk">Read article</span></div></a></section>'
                 % (f['slug'], at(url_css(f.get('image'))), t(f.get('category')), t(f.get('read_time')), t(f['title']), t(f.get('excerpt'))))
     if len(ARTICLES) > 1:
@@ -313,8 +368,9 @@ def footer_html():
 def fig(src, cls, cap, alt, name):
     if not img(src):
         return ''
-    return ('<figure class="ci %s"><div class="cw"><img src="%s" alt="%s" loading="lazy"></div>%s</figure>'
-            % (cls, at(img(src)), at('%s, %s' % (name, alt)), '<figcaption>%s</figcaption>' % t(cap) if cap else ''))
+    return ('<figure class="ci %s"><div class="cw">%s</div>%s</figure>'
+            % (cls, img_tag(src, '%s, %s' % (name, alt), sizes='100vw' if 'wide' in cls or 'full' in cls else '(max-width: 800px) 100vw, 60vw'),
+               '<figcaption>%s</figcaption>' % t(cap) if cap else ''))
 
 
 def case_html(p, i):
@@ -345,14 +401,14 @@ def case_html(p, i):
                fig(p.get('stationery_image'), 'off', p.get('stationery_caption'), 'stationery', n)))
     out += ('<section class="cut px sb cout"><span class="lab rv">%s</span><p class="stm d rv">%s</p><div class="cdel rv"><span class="lab">%s</span>%s</div></section>'
             % ('The aim' if cc else 'The result', t(p.get('outcome')), 'What we made' if cc else 'The system', li(p.get('deliverables', []))))
-    out += ('<a class="cnext" href="/work/%s/" data-cur="Next"><div class="cnb" style="background-image:%s"></div><div class="cnt"><span class="lab">%s · %s</span><span class="d">%s <i>→</i></span></div></a>'
+    out += ('<a class="cnext" href="/work/%s/" data-cur="Next"><div class="cnb" data-bg="%s"></div><div class="cnt"><span class="lab">%s · %s</span><span class="d">%s <i>→</i></span></div></a>'
             % (x['slug'], at(url_css(x.get('cover_image'))), 'Next concept' if x.get('concept') else 'Next project', t(x['sector']), t(x['title'])))
     return out
 
 
 def article_html(a, i):
     x = ARTICLES[(i + 1) % len(ARTICLES)]
-    picture = '<figure class="ci afig"><div class="cw"><img src="%s" alt="" loading="lazy"></div></figure>' % at(img(a['image'])) if img(a.get('image')) else ''
+    picture = '<figure class="ci afig"><div class="cw">%s</div></figure>' % img_tag(a['image'], '') if img(a.get('image')) else ''
     return ('<section class="pg sw"><a class="bk" href="/journal/">← Journal</a><span class="lab">%s · %s</span><h1 class="d hh2 mk"><span class="ln"><span>%s</span></span></h1><p class="lead rv">%s</p></section>'
             '%s<section class="px sk abody"><div class="body">%s</div></section>'
             '<a class="cut px sb nxt" href="/journal/%s/" data-cur="Next"><span class="lab">Next article</span><span class="d">%s</span></a>'
@@ -369,13 +425,13 @@ POSTS = [article_html(a, i) for i, a in enumerate(ARTICLES)]
 DATA = {'P': [{'s': p['slug'], 'title': doc_title(p), 'html': CASES[i]} for i, p in enumerate(PROJECTS)],
         'A': [{'s': a['slug'], 'title': '%s — Sharp Story' % a['title'], 'html': POSTS[i]} for i, a in enumerate(ARTICLES)]}
 TT = {'home': HOME['seo_title'], 'work': WORK['seo_title'], 'about': ABOUT['seo_title'], 'journal': JOURNAL['seo_title'], 'contact': CONTACT['seo_title'],
-      'services': SERVICES['seo_title'], 'book': BOOK['seo_title']}
+      'services': SERVICES['seo_title'], 'book': BOOK['seo_title'], 'notfound': 'Page not found — Sharp Story'}
 
 T = open(os.path.join(ROOT, 'src', 'template.html'), encoding='utf-8').read()
 js_str = lambda v: json.dumps(v, ensure_ascii=False).replace('</', '<\\/')
 BASE = (T.replace('{{home}}', home_html()).replace('{{work}}', work_html()).replace('{{about}}', about_html())
         .replace('{{journal}}', journal_html()).replace('{{contact}}', contact_html()).replace('{{footer}}', footer_html())
-        .replace('{{services}}', services_html()).replace('{{book}}', book_html())
+        .replace('{{services}}', services_html()).replace('{{notfound}}', notfound_html()).replace('{{book}}', book_html())
         .replace('{{nav_cta}}', t(S.get('nav_cta') or 'Book a free call')).replace('{{nav_cta_short}}', t(S.get('nav_cta_short') or 'Free call'))
         .replace('{{data}}', js_str(DATA)).replace('{{tt}}', js_str(TT)).replace('{{email}}', EMAIL.replace("'", "\\'")))
 assert '{{' not in BASE.replace('{{head}}', ''), re.findall(r'\{\{\w+\}\}', BASE)
@@ -432,7 +488,7 @@ for i, a in enumerate(ARTICLES):
     write(path, page(path, 'article', '%s — Sharp Story' % a['title'], clip(a.get('excerpt')), POSTS[i]))
     urls.append(path)
 with open(os.path.join(OUT, '404.html'), 'w', encoding='utf-8') as f:
-    f.write(page('/', 'home', 'Page not found — Sharp Story', S['seo_description'], noindex=True))
+    f.write(page('/404/', 'notfound', 'Page not found — Sharp Story', S['seo_description'], noindex=True))
 
 # static files, editor, search files
 shutil.copytree(os.path.join(ROOT, 'static'), OUT, dirs_exist_ok=True)
