@@ -5,10 +5,10 @@
   "lead": "Tell us what you’re building and where you want it to go. We take on a small number of projects at a time, so every enquiry is read and answered personally.",
   "needs_label": "What can we help with?",
   "needs": [
-    "Shelf Check",
-    "Hero Pack",
-    "Launch System",
-    "Range Refresh",
+    "Brand strategy",
+    "Brand identity",
+    "Packaging design",
+    "All three",
     "Not sure yet"
   ],
   "message_placeholder": "What you do, what’s changing, and what you need the brand to do next.",
@@ -34,5 +34,7 @@
     "1–3 months",
     "3+ months",
     "Exploring"
-  ]
+  ],
+  "call_heading": "Prefer to talk?",
+  "call_text": "Book a free 30-minute call instead."
 }

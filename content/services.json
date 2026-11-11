@@ -1,0 +1,80 @@
+{
+  "seo_title": "Services: Brand strategy, identity and packaging — Sharp Story",
+  "seo_description": "Brand strategy, brand identity and packaging design for D2C and FMCG brands. What each service includes, how long it takes and how we work.",
+  "label": "Services",
+  "heading": "Three services.\nOne idea\nrunning through them.",
+  "lead": "Strategy finds the idea. Identity makes it visible. Packaging puts it in your buyer’s hand. Take one, or all three as one system.",
+  "services": [
+    {
+      "title": "Brand strategy",
+      "line": "The thinking everything else stands on.",
+      "for": "New brands deciding what they stand for, and growing brands that have lost the thread.",
+      "text": "We research your category, your competitors and the people you sell to, then define the positioning, the story and the one idea your brand will own.",
+      "includes": [
+        "Category and competitor research",
+        "Audience insight",
+        "Positioning and the one idea",
+        "Brand story and messaging",
+        "Naming support"
+      ],
+      "timeline": "2–3 weeks"
+    },
+    {
+      "title": "Brand identity",
+      "line": "A brand people recognise before they read it.",
+      "for": "Brands getting ready to launch, and brands whose look no longer matches where they’re going.",
+      "text": "We turn the strategy into a complete visual and verbal system, built to work on a pack, a phone screen and a marketplace thumbnail.",
+      "includes": [
+        "Logo and symbol",
+        "Typography and colour",
+        "Visual language and imagery",
+        "Tone of voice",
+        "Brand guidelines"
+      ],
+      "timeline": "4–6 weeks"
+    },
+    {
+      "title": "Packaging design",
+      "line": "Where the brand is picked up, opened and judged.",
+      "for": "A first hero product, a new SKU, or a range that has grown faster than its packaging.",
+      "text": "We design packaging as part of the brand system, so it stands out on shelf and on screen and extends cleanly across every variant.",
+      "includes": [
+        "Shelf and quick-commerce audit",
+        "Structure and materials",
+        "Hero pack design",
+        "Range and variant system",
+        "Print-ready files and proofing"
+      ],
+      "timeline": "3–8 weeks, depending on the range"
+    }
+  ],
+  "together_note": "Most new brands take all three as one project, so the strategy, identity and packaging are built together from the start.",
+  "process_label": "How we work",
+  "process_heading": "Four steps.\nNo surprises.",
+  "process": [
+    {
+      "title": "Listen",
+      "text": "We study the business, the category and the people you sell to through conversations, a competitor audit and research on shelf and on screen.",
+      "get": "A research summary and a clear brief"
+    },
+    {
+      "title": "Cut",
+      "text": "We strip away what doesn’t matter until one idea is left, and agree it with you before any design starts.",
+      "get": "Positioning and the one idea, in writing"
+    },
+    {
+      "title": "Shape",
+      "text": "We design the identity and packaging around that idea in two creative routes, then refine the chosen route over two rounds of feedback.",
+      "get": "Final identity and packaging designs"
+    },
+    {
+      "title": "Launch",
+      "text": "We prepare everything you need to go live and stay consistent, and work with your printer on proofs until the pack is right.",
+      "get": "Guidelines, print-ready files and brand assets"
+    }
+  ],
+  "call_label": "Free brand clarity call",
+  "call_heading": "Not sure where\nto start?",
+  "call_text": "Book a free 30-minute call. Share your brand when you book, and we’ll come with three honest observations on how it reads against your competitors.",
+  "call_button": "Book a free call"
+}

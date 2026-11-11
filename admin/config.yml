@@ -119,32 +119,7 @@ collections:
           - { name: all_work_label, label: Label above "All work", widget: string }
           - { name: services_label, label: Services label, widget: string }
           - { name: services_heading, label: Services heading, widget: text }
-          - name: services
-            label: Services
-            widget: list
-            summary: "{{title}}"
-            fields:
-              - { name: title, label: Service, widget: string }
-              - { name: line, label: One-liner, widget: string }
-              - { name: text, label: Description, widget: text }
-              - { name: includes, label: Includes, widget: list, field: { name: item, label: Item, widget: string } }
-          - { name: offers_label, label: Offers label, widget: string }
-          - { name: offers_heading, label: Offers heading, widget: text }
-          - { name: offers_text, label: Offers intro, widget: text }
-          - name: offers
-            label: Offers
-            widget: list
-            summary: "{{name}} · {{price}}"
-            hint: "The first offer is highlighted in blue."
-            fields:
-              - { name: name, label: Offer name, widget: string }
-              - { name: text, label: Description, widget: text }
-              - { name: timeline, label: Timeline, widget: string }
-              - { name: price, label: Price, widget: string, hint: "For the Shelf Check, keep this the same as on the Shelf Check page." }
-              - { name: note, label: Small note, widget: string, required: false }
-              - { name: link, label: Link, widget: string, required: false, hint: "Optional, e.g. /shelf-check/. If empty, the card opens the contact form with this offer selected." }
-          - { name: offers_primary, label: Offers main button, widget: string }
-          - { name: offers_secondary, label: Offers second button, widget: string }
+          - { name: services_link, label: Link to the Services page, widget: string, hint: "The services themselves are edited in Pages → Services." }
           - { name: faq_label, label: FAQ label, widget: string }
           - { name: faq_heading, label: FAQ heading, widget: text }
           - name: faq
@@ -155,22 +130,57 @@ collections:
               - { name: q, label: Question, widget: string }
               - { name: a, label: Answer, widget: text }
 
-      - name: shelf-check
-        label: Shelf Check
-        file: content/shelf-check.json
+      - name: services
+        label: Services
+        file: content/services.json
         fields:
           - { name: seo_title, label: Browser and Google title, widget: string }
           - { name: seo_description, label: Google description, widget: text }
           - { name: label, label: Label, widget: string }
           - { name: heading, label: Heading, widget: text }
           - { name: lead, label: Intro, widget: text }
-          - { name: image, label: Image, widget: image, required: false, hint: "Wide image, e.g. packs side by side. About 2400×1030." }
-          - { name: includes_label, label: List label, widget: string }
-          - { name: includes, label: What you get, widget: list, field: { name: item, label: Item, widget: string } }
-          - { name: price, label: Price, widget: string, hint: "Keep this the same as the Shelf Check price in Home → Offers." }
-          - { name: duration, label: Duration, widget: string }
-          - { name: credit_note, label: Credit note, widget: text }
-          - { name: button, label: Button text, widget: string }
+          - name: services
+            label: Services
+            widget: list
+            summary: "{{title}}"
+            hint: "Also shown in \"What we do\" on the home page."
+            fields:
+              - { name: title, label: Service, widget: string }
+              - { name: line, label: One-liner, widget: string }
+              - { name: for, label: Who it's for, widget: text }
+              - { name: text, label: Description, widget: text }
+              - { name: includes, label: What's included, widget: list, field: { name: item, label: Item, widget: string } }
+              - { name: timeline, label: Typical timeline, widget: string }
+          - { name: together_note, label: Note under the services, widget: text, required: false }
+          - { name: process_label, label: Process label, widget: string }
+          - { name: process_heading, label: Process heading, widget: text }
+          - name: process
+            label: Process steps
+            widget: list
+            summary: "{{title}}"
+            fields:
+              - { name: title, label: Step, widget: string }
+              - { name: text, label: What happens, widget: text }
+              - { name: get, label: What you get, widget: string }
+          - { name: call_label, label: Free call band label, widget: string, hint: "The blue band at the end of Services and Home." }
+          - { name: call_heading, label: Free call band heading, widget: text }
+          - { name: call_text, label: Free call band text, widget: text }
+          - { name: call_button, label: Free call band button, widget: string }
+
+      - name: book
+        label: Book a free call
+        file: content/book.json
+        fields:
+          - { name: seo_title, label: Browser and Google title, widget: string }
+          - { name: seo_description, label: Google description, widget: text }
+          - { name: label, label: Label, widget: string }
+          - { name: heading, label: Heading, widget: text }
+          - { name: lead, label: Intro, widget: text }
+          - { name: points_label, label: List label, widget: string }
+          - { name: points, label: About the call, widget: list, field: { name: item, label: Item, widget: string } }
+          - { name: booking_url, label: Google booking page address, widget: string, hint: "The long calendar.google.com/calendar/appointments/schedules/… address of your booking page." }
+          - { name: fallback, label: Link to open the booking page, widget: string }
+          - { name: brief_note, label: Link to the contact form, widget: string }
 
       - name: about
         label: About
@@ -221,7 +231,7 @@ collections:
           - { name: heading, label: Heading, widget: text }
           - { name: lead, label: Intro, widget: text }
           - { name: needs_label, label: Services question, widget: string }
-          - { name: needs, label: Service options, widget: list, field: { name: option, label: Option, widget: string }, hint: "Links from offers select the option with the same name." }
+          - { name: needs, label: Service options, widget: list, field: { name: option, label: Option, widget: string } }
           - { name: skus_label, label: SKU question, widget: string }
           - { name: skus, label: SKU options, widget: list, field: { name: option, label: Option, widget: string } }
           - { name: timeline_label, label: Timeline question, widget: string }
@@ -232,6 +242,8 @@ collections:
           - { name: success_message, label: Thank-you message, widget: string }
           - { name: next_heading, label: Next steps heading, widget: string }
           - { name: next_steps, label: Next steps, widget: list, field: { name: step, label: Step, widget: string } }
+          - { name: call_heading, label: Free call heading, widget: string }
+          - { name: call_text, label: Free call link text, widget: string }
 
   # ---------------------------------------------------------------- Settings
   - name: settings
@@ -251,6 +263,7 @@ collections:
           - { name: behance, label: Behance link, widget: string, required: false, hint: "Leave empty to hide." }
           - { name: footer_label, label: Footer label, widget: string }
           - { name: footer_heading, label: Footer heading, widget: text }
-          - { name: nav_cta, label: Top menu button, widget: string, hint: "Links to the Shelf Check page. Phones show 'Shelf Check'." }
-          - { name: footer_button, label: Footer main button, widget: string, hint: "Links to the Shelf Check page." }
+          - { name: nav_cta, label: Top menu button, widget: string, hint: "Links to the free call booking page." }
+          - { name: nav_cta_short, label: Top menu button on phones, widget: string }
+          - { name: footer_button, label: Footer main button, widget: string, hint: "Links to the free call booking page." }
           - { name: footer_secondary, label: Footer second button, widget: string, hint: "Links to the contact page." }

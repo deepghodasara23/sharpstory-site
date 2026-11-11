@@ -22,3 +22,10 @@
   for = "/admin/*"
   [headers.values]
     Cache-Control = "no-cache"
+
+# The Shelf Check page was replaced by the free call booking page.
+[[redirects]]
+  from = "/shelf-check/*"
+  to = "/book/"
+  status = 301
+  force = true

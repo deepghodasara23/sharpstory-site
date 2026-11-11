@@ -9,86 +9,20 @@
   "all_work_label": "Six brand concepts",
   "services_label": "What we do",
   "services_heading": "Three disciplines.\nOne idea running through them.",
-  "services": [
-    {
-      "title": "Brand strategy",
-      "line": "The thinking everything else stands on.",
-      "text": "We research the business, the market and the people it serves, then define the purpose, positioning and story the brand will own.",
-      "includes": [
-        "Research and insight",
-        "Purpose and positioning",
-        "Brand story and messaging",
-        "Naming support"
-      ]
-    },
-    {
-      "title": "Branding",
-      "line": "An identity people recognise before they read it.",
-      "text": "We turn the strategy into a complete visual and verbal system that holds up everywhere the brand appears.",
-      "includes": [
-        "Logo and visual identity",
-        "Typography and colour",
-        "Tone of voice",
-        "Brand guidelines"
-      ]
-    },
-    {
-      "title": "Packaging design",
-      "line": "Where the brand is held, opened and judged.",
-      "text": "We design packaging as part of the brand system, from structure and materials to the moment someone opens it.",
-      "includes": [
-        "Structure and materials",
-        "Range and label systems",
-        "Print and finish",
-        "Unboxing experience"
-      ]
-    }
-  ],
-  "offers_label": "Offers",
-  "offers_heading": "Four ways to work with us.",
-  "offers_text": "Start small or build the whole brand. Every offer begins with the same thing: finding the one idea.",
-  "offers": [
-    {
-      "name": "Shelf Check",
-      "text": "Your packaging, audited against five competitors on shelf, Amazon and quick-commerce. A clear diagnosis of what’s costing you attention, and what to fix first.",
-      "timeline": "5 days",
-      "price": "₹20,000",
-      "note": "Credited to any project after",
-      "link": "/shelf-check/"
-    },
-    {
-      "name": "Hero Pack",
-      "text": "One hero product, designed to win. Strategy brief, two creative routes and print-ready packaging for your lead SKU, ready to extend across the range.",
-      "timeline": "3–4 weeks",
-      "price": "Starting at ₹75,000",
-      "note": "",
-      "link": ""
-    },
-    {
-      "name": "Launch System",
-      "text": "Everything a new brand needs to launch properly. Positioning, identity, hero pack, three SKUs and brand guidelines, built as one system.",
-      "timeline": "6–8 weeks",
-      "price": "Starting at ₹2.5 lakh",
-      "note": "",
-      "link": ""
-    },
-    {
-      "name": "Range Refresh",
-      "text": "For established brands with a full range. A packaging system that sharpens every SKU while keeping the recall you’ve already earned.",
-      "timeline": "8–14 weeks",
-      "price": "Scoped to your range",
-      "note": "",
-      "link": ""
-    }
-  ],
-  "offers_primary": "Book a Shelf Check",
-  "offers_secondary": "Discuss a project",
   "faq_label": "FAQ",
   "faq_heading": "Questions founders ask.",
   "faq": [
     {
+      "q": "What happens on the free call?",
+      "a": "We look at your brand and packaging before the call, then share three honest observations and talk through what would make the biggest difference. If there’s a fit, we follow up with a proposal."
+    },
+    {
+      "q": "Can we hire you for just one service?",
+      "a": "Yes. You can take brand strategy, brand identity or packaging design on its own, or all three as one project."
+    },
+    {
       "q": "How long does a project take?",
-      "a": "From 5 days for a Shelf Check to 8–14 weeks for a full range."
+      "a": "Strategy takes 2–3 weeks, identity 4–6 weeks and packaging 3–8 weeks. A complete brand built from scratch usually takes 8–12 weeks."
     },
     {
       "q": "How many revisions are included?",
@@ -101,10 +35,7 @@
     {
       "q": "Do you handle print?",
       "a": "We deliver print-ready files and work with your printer on proofs."
-    },
-    {
-      "q": "Can we start small?",
-      "a": "Yes. Most clients begin with a Shelf Check, and its fee is credited to the project."
     }
-  ]
+  ],
+  "services_link": "See services and process"
 }
