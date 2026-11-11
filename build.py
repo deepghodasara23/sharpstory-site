@@ -5,7 +5,9 @@ Everything editable lives in content/ (edited through /admin). This script turns
 into static pages in dist/. It uses only the Python standard library, so it runs on
 Netlify with no install step:  python3 build.py
 """
-import glob, html, json, os, re, shutil
+import glob, html, json, os, re, shutil, sys
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), 'src'))
+from icons import icon  # noqa: E402
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(ROOT, 'dist')
@@ -195,14 +197,16 @@ def services_html():
            % (t(c.get('label')), lines(c['heading']), t(c.get('lead'))))
     rows = ''
     for i, x in enumerate(c.get('services', [])):
-        rows += ('<div class="svc sv2 rv"><span>%s</span><h3 class="d">%s</h3><div><p class="sl">%s</p><p>%s</p>'
+        rows += ('<div class="svc sv2 rv"><span>%s</span><div class="svh"><h3 class="d">%s</h3>%s</div><div><p class="sl">%s</p><p>%s</p>'
                  '<dl class="sfor"><div><dt>For</dt><dd>%s</dd></div><div><dt>Typical timeline</dt><dd>%s</dd></div></dl>'
                  '<span class="lab">What’s included</span><ul>%s</ul></div></div>'
-                 % (num(i), t(x['title']), t(x.get('line')), t(x.get('text')), t(x.get('for')), t(x.get('timeline')),
+                 % (num(i), t(x['title']), ('<figure class="svf">%s</figure>' % icon(x.get('icon'))) if icon(x.get('icon')) else '',
+                    t(x.get('line')), t(x.get('text')), t(x.get('for')), t(x.get('timeline')),
                     ''.join('<li>%s</li>' % t(v) for v in x.get('includes', []))))
     out += '<section class="px sk svl">%s%s</section>' % (rows, '<p class="svn rv">%s</p>' % t(c['together_note']) if c.get('together_note') else '')
-    steps = ''.join('<li class="rv" style="--d:%.2fs"><span>%s</span><h3 class="d">%s</h3><p>%s</p><div class="pg2"><b>You get</b>%s</div></li>'
-                    % (i * .08, num(i), t(x['title']), t(x.get('text')), t(x.get('get'))) for i, x in enumerate(c.get('process', [])))
+    steps = ''.join('<li class="rv" style="--d:%.2fs">%s<span>%s</span><h3 class="d">%s</h3><p>%s</p><div class="pg2"><b>You get</b>%s</div></li>'
+                    % (i * .12, ('<figure class="prf">%s</figure>' % icon(x.get('icon'))) if icon(x.get('icon')) else '',
+                       num(i), t(x['title']), t(x.get('text')), t(x.get('get'))) for i, x in enumerate(c.get('process', [])))
     out += ('<section class="cut px sw pr"><span class="lab">%s</span><h2 class="d rv">%s</h2><ol class="pr4">%s</ol></section>'
             % (t(c.get('process_label')), br(c.get('process_heading')), steps))
     return out + call_html()

@@ -17,7 +17,8 @@
         "Brand story and messaging",
         "Naming support"
       ],
-      "timeline": "2–3 weeks"
+      "timeline": "2–3 weeks",
+      "icon": "strategy"
     },
     {
       "title": "Brand identity",
@@ -31,7 +32,8 @@
         "Tone of voice",
         "Brand guidelines"
       ],
-      "timeline": "4–6 weeks"
+      "timeline": "4–6 weeks",
+      "icon": "identity"
     },
     {
       "title": "Packaging design",
@@ -45,7 +47,8 @@
         "Range and variant system",
         "Print-ready files and proofing"
       ],
-      "timeline": "3–8 weeks, depending on the range"
+      "timeline": "3–8 weeks, depending on the range",
+      "icon": "packaging"
     }
   ],
   "together_note": "Most new brands take all three as one project, so the strategy, identity and packaging are built together from the start.",
@@ -55,22 +58,26 @@
     {
       "title": "Listen",
       "text": "We study the business, the category and the people you sell to through conversations, a competitor audit and research on shelf and on screen.",
-      "get": "A research summary and a clear brief"
+      "get": "A research summary and a clear brief",
+      "icon": "listen"
     },
     {
       "title": "Cut",
       "text": "We strip away what doesn’t matter until one idea is left, and agree it with you before any design starts.",
-      "get": "Positioning and the one idea, in writing"
+      "get": "Positioning and the one idea, in writing",
+      "icon": "cut"
     },
     {
       "title": "Shape",
       "text": "We design the identity and packaging around that idea in two creative routes, then refine the chosen route over two rounds of feedback.",
-      "get": "Final identity and packaging designs"
+      "get": "Final identity and packaging designs",
+      "icon": "shape"
     },
     {
       "title": "Launch",
       "text": "We prepare everything you need to go live and stay consistent, and work with your printer on proofs until the pack is right.",
-      "get": "Guidelines, print-ready files and brand assets"
+      "get": "Guidelines, print-ready files and brand assets",
+      "icon": "launch"
     }
   ],
   "call_label": "Free brand clarity call",
