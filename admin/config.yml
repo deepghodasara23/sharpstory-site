@@ -151,7 +151,6 @@ collections:
               - { name: text, label: Description, widget: text }
               - { name: includes, label: What's included, widget: list, field: { name: item, label: Item, widget: string } }
               - { name: timeline, label: Typical timeline, widget: string }
-              - { name: icon, label: Illustration, widget: select, options: [strategy, identity, packaging, listen, cut, shape, launch], required: false }
           - { name: together_note, label: Note under the services, widget: text, required: false }
           - { name: process_label, label: Process label, widget: string }
           - { name: process_heading, label: Process heading, widget: text }
@@ -163,7 +162,6 @@ collections:
               - { name: title, label: Step, widget: string }
               - { name: text, label: What happens, widget: text }
               - { name: get, label: What you get, widget: string }
-              - { name: icon, label: Illustration, widget: select, options: [listen, cut, shape, launch, strategy, identity, packaging], required: false }
           - { name: call_label, label: Free call band label, widget: string, hint: "The blue band at the end of Services and Home." }
           - { name: call_heading, label: Free call band heading, widget: text }
           - { name: call_text, label: Free call band text, widget: text }
