@@ -311,7 +311,7 @@ def about_html():
                                                       for i, x in enumerate(a.get('principles', [])))))
     out += ('<section class="cut px sb"><span class="lab">%s</span><h2 class="d" style="font-size:clamp(44px,9vw,160px)">%s</h2><ol class="tl" id="tl">%s</ol></section>'
             % (t(a.get('process_label')), t(a.get('process_heading')),
-               ''.join('<li><h3 class="d">%s</h3><p>%s</p></li>' % (t(x['title']), t(x['text'])) for x in a.get('process', []))))
+               ''.join('<li><span>%s</span><h3 class="d">%s</h3><p>%s</p></li>' % (num(i), t(x['title']), t(x['text'])) for i, x in enumerate(a.get('process', [])))))
     return out
 
 
