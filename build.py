@@ -216,8 +216,9 @@ def home_html():
     for i, s in enumerate(svc):
         out += ('<div class="svc rv"><span>%s</span><h3 class="d">%s</h3><div><p class="sl">%s</p><p>%s</p><ul>%s</ul></div></div>'
                 % (num(i), t(s['title']), t(s.get('line')), t(s.get('text')), ''.join('<li>%s</li>' % t(x) for x in s.get('includes', []))))
-    out += '<div class="svm rv"><a class="fbtn" href="/services/">%s <span>→</span></a></div></section>' % t(h.get('services_link') or 'See services and process')
-    return out + call_html() + faq_html()
+    out += ('<div class="svc svx rv"><span></span><p class="svq">%s</p><div><p>%s</p><a class="lk" href="/services/">%s <span>→</span></a></div></div></section>'
+            % (t(h.get('services_more_heading') or 'Want the detail?'), t(h.get('services_more_text')), t(h.get('services_link') or 'See services and process')))
+    return out + call_html('sk') + faq_html()
 
 
 def call_html(cls='sb'):

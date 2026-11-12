@@ -37,5 +37,7 @@
       "a": "We deliver print-ready files and work with your printer on proofs."
     }
   ],
-  "services_link": "See services and process"
+  "services_link": "See services and process",
+  "services_more_heading": "Want the detail?",
+  "services_more_text": "What each service includes, how long it takes, and the four steps we follow from the first call to launch."
 }

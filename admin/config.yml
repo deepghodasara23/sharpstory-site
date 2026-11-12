@@ -119,6 +119,8 @@ collections:
           - { name: all_work_label, label: Label above "All work", widget: string }
           - { name: services_label, label: Services label, widget: string }
           - { name: services_heading, label: Services heading, widget: text }
+          - { name: services_more_heading, label: Closing row heading, widget: string, hint: "The last row under the services, linking to the Services page." }
+          - { name: services_more_text, label: Closing row text, widget: text }
           - { name: services_link, label: Link to the Services page, widget: string, hint: "The services themselves are edited in Pages → Services." }
           - { name: faq_label, label: FAQ label, widget: string }
           - { name: faq_heading, label: FAQ heading, widget: text }
