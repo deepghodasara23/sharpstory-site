@@ -76,11 +76,17 @@ nav ul a.on:after{clip-path:polygon(0 0,100% 0,92% 100%,0 100%)}
 .mn .mnf small{margin-top:0}
 .mnf .lk{font-weight:600;border-bottom:2px solid currentColor;padding-bottom:2px;white-space:nowrap}
 .mnf .lk span{display:inline-block;transition:transform .3s}.mnf .lk:hover span{transform:translateX(5px)}
+.mnl{display:flex;flex-direction:column;align-items:flex-end;gap:22px;text-align:right}
+.mnf .jp{max-width:30ch;font-weight:600;line-height:1.3}.mnf .jp .lab{display:block;margin:0 0 6px;font-weight:500;opacity:.6}
+.mnf .jp>span:last-child{display:inline-block;transition:transform .3s}.mnf .jp:hover>span:last-child{transform:translateX(5px)}
+@media(max-width:800px){.mnl{align-items:flex-start;text-align:left}}
 /* home: all work is one line, not a full screen */
 .allw{padding-bottom:clamp(40px,7vh,80px)}
 .allw .d{font-size:clamp(48px,9vw,160px)}
 .allw .d i{font-style:normal;display:inline-block;color:var(--b);transition:transform .8s cubic-bezier(.22,1,.36,1)}
 .allw a:hover .d i{transform:translateX(1.5vw)}
+/* home: on wide screens the work gets more room and the title stays clear of it */
+@media(min-width:1101px){.ar{width:50vw;top:17vh;bottom:11vh}.cs h3{font-size:clamp(64px,11.5vw,210px);max-width:40vw}}
 .ft{padding-bottom:28px}.ft .big{margin-top:var(--gap)}.ft .f{margin-top:clamp(28px,5vh,56px)}.ft a.mail{margin:var(--gap) 0 0}.ft h2{max-width:11ch}
 .crw{margin-top:var(--gap)}.crw svg{clip-path:polygon(0 100%,100% 100%,100% 100%,0 100%);transition:clip-path 1.5s cubic-bezier(.77,0,.18,1)}.crw.in svg{clip-path:polygon(0 0,100% 0,100% 100%,0 100%)}.ft .crw .big{margin-top:0}
 /* art library */

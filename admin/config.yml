@@ -118,6 +118,7 @@ collections:
           - { name: all_work_label, label: Label above "All work", widget: string }
           - { name: services_label, label: "What we do: label", widget: string }
           - { name: services_link, label: Link to the Services page, widget: string, hint: "The services themselves are edited in Pages → Services." }
+          - { name: journal_label, label: "What we do: journal link label", widget: string, required: false, hint: "Links to the featured journal article." }
           - { name: faq_label, label: FAQ label, widget: string, hint: "The FAQ is shown on the Services page." }
           - { name: faq_heading, label: FAQ heading, widget: text }
           - name: faq
@@ -197,9 +198,6 @@ collections:
           - { name: audiences, label: Who we work with, widget: list, summary: "{{title}}", fields: [{ name: title, label: Title, widget: string }, { name: text, label: Text, widget: text }] }
           - { name: principles_label, label: Principles label, widget: string }
           - { name: principles, label: How we think, widget: list, summary: "{{title}}", fields: [{ name: title, label: Title, widget: string }, { name: text, label: Text, widget: text }] }
-          - { name: process_label, label: Process label, widget: string }
-          - { name: process_heading, label: Process heading, widget: string }
-          - { name: process, label: Process steps, widget: list, summary: "{{title}}", fields: [{ name: title, label: Step, widget: string }, { name: text, label: Text, widget: text }] }
 
       - name: work
         label: Work page

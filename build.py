@@ -198,9 +198,12 @@ def home_html():
     svc = SERVICES.get('services', [])
     # What we do: the three disciplines as one big statement, then the short intro and a link to the detail.
     out += ('<section class="cut mn"><span class="lab">%s</span><div id="mnr"><h2 class="d svh2">%s</h2></div>'
-            '<div class="mnf"><small>%s</small><a class="lk" href="/services/">%s <span>→</span></a></div></section>'
+            '<div class="mnf"><small>%s</small><div class="mnl"><a class="lk" href="/services/">%s <span>→</span></a>%s</div></div></section>'
             % (t(h.get('services_label') or 'What we do'), lines('\n'.join(s['title'] for s in svc)), t(h['manifesto_text']),
-               t(h.get('services_link') or 'See services and process')))
+               t(h.get('services_link') or 'See services and process'),
+               # the featured journal article shows the studio's specialism, so it gets a link here
+               '<a class="jp" href="/journal/%s/"><span class="lab">%s</span>%s <span>→</span></a>' % (ARTICLES[0]['slug'], t(h.get('journal_label') or 'From the journal'), t(ARTICLES[0]['title']))
+               if ARTICLES else ''))
     feat = [p for p in PROJECTS if p.get('show_on_home')][:max(1, int(h.get('featured_count') or 4))]
     out += '<section id="hw">'
     for k, p in enumerate(feat):
@@ -307,10 +310,7 @@ def about_html():
     out += ('<section class="cut px sk"><span class="lab">%s</span>%s</section>'
             % (t(a.get('principles_label')), ''.join('<div class="pc rv"><span>%s</span><h3 class="d">%s</h3><p>%s</p></div>' % (num(i), t(x['title']), t(x['text']))
                                                       for i, x in enumerate(a.get('principles', [])))))
-    out += ('<section class="cut px sb"><span class="lab">%s</span><h2 class="d" style="font-size:clamp(44px,9vw,160px)">%s</h2><ol class="tl" id="tl">%s</ol></section>'
-            % (t(a.get('process_label')), t(a.get('process_heading')),
-               ''.join('<li><span>%s</span><h3 class="d">%s</h3><p>%s</p></li>' % (num(i), t(x['title']), t(x['text'])) for i, x in enumerate(a.get('process', [])))))
-    return out
+    return out + call_html()
 
 
 def journal_html():
