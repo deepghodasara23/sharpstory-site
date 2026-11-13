@@ -3,12 +3,10 @@
   "hero_heading": "Brands, cut down\nto one idea.",
   "hero_text": "An independent branding and packaging studio for D2C and FMCG brands.",
   "hero_label": "Branding studio",
-  "manifesto_heading": "We cut until\none idea\nis left.",
   "manifesto_text": "Every strong brand stands on one clear idea. We find it through research, sharpen it through strategy and bring it to life through identity and packaging, so the brand is easy to understand, hard to copy and built to last.",
   "featured_count": 4,
   "all_work_label": "Six brand concepts",
   "services_label": "What we do",
-  "services_heading": "Three disciplines.\nOne idea running through them.",
   "faq_label": "FAQ",
   "faq_heading": "Questions founders ask.",
   "faq": [
@@ -37,7 +35,5 @@
       "a": "We deliver print-ready files and work with your printer on proofs."
     }
   ],
-  "services_link": "See services and process",
-  "services_more_heading": "Want the detail?",
-  "services_more_text": "What each service includes, how long it takes, and the four steps we follow from the first call to launch."
+  "services_link": "See services and process"
 }

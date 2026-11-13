@@ -196,8 +196,11 @@ def home_html():
            '<div class="hf R" id="R"><svg class="wmb" viewBox="0 0 578.45 61.54" aria-hidden="true"><use href="#wm"/></svg><p>Scroll to cut <i></i></p></div></div></header>'
            % (br(h['hero_heading']), t(h['hero_text']), t(h.get('hero_label'))))
     svc = SERVICES.get('services', [])
-    out += ('<section class="cut mn"><div id="mnr"><h2 class="d">%s</h2></div><p class="sv">%s</p><small>%s</small></section>'
-            % (lines(h['manifesto_heading']), '<i class="sp"></i>'.join(t(s['title']) for s in svc), t(h['manifesto_text'])))
+    # What we do: the three disciplines as one big statement, then the short intro and a link to the detail.
+    out += ('<section class="cut mn"><span class="lab">%s</span><div id="mnr"><h2 class="d svh2">%s</h2></div>'
+            '<div class="mnf"><small>%s</small><a class="lk" href="/services/">%s <span>→</span></a></div></section>'
+            % (t(h.get('services_label') or 'What we do'), lines('\n'.join(s['title'] for s in svc)), t(h['manifesto_text']),
+               t(h.get('services_link') or 'See services and process')))
     feat = [p for p in PROJECTS if p.get('show_on_home')][:max(1, int(h.get('featured_count') or 4))]
     out += '<section id="hw">'
     for k, p in enumerate(feat):
@@ -210,15 +213,9 @@ def home_html():
                    at(url_css(p.get('cover_image'))), '<br>'.join(t(w) for w in p['title'].split(' ')), t(p.get('tagline')),
                    p['slug'], 'View concept' if concept else 'Read case study'))
     out += '</section>'
-    out += ('<section class="cut px sw allw"><a href="/work/" data-cur="Open"><span class="lab">%s</span><span class="d">All work</span></a></section>'
+    out += ('<section class="cut px sw allw"><a href="/work/" data-cur="Open"><span class="lab">%s</span><span class="d">All work <i>→</i></span></a></section>'
             % t(h.get('all_work_label')))
-    out += '<section class="cut px sb"><span class="lab">%s</span><h2 class="d svh">%s</h2>' % (t(h.get('services_label')), br(h.get('services_heading')))
-    for i, s in enumerate(svc):
-        out += ('<div class="svc rv"><span>%s</span><h3 class="d">%s</h3><div><p class="sl">%s</p><p>%s</p><ul>%s</ul></div></div>'
-                % (num(i), t(s['title']), t(s.get('line')), t(s.get('text')), ''.join('<li>%s</li>' % t(x) for x in s.get('includes', []))))
-    out += ('<div class="svc svx rv"><span></span><p class="svq">%s</p><div><p>%s</p><a class="lk" href="/services/">%s <span>→</span></a></div></div></section>'
-            % (t(h.get('services_more_heading') or 'Want the detail?'), t(h.get('services_more_text')), t(h.get('services_link') or 'See services and process')))
-    return out + call_html('sk') + faq_html()
+    return out + call_html('sk')
 
 
 def call_html(cls='sb'):
@@ -254,7 +251,7 @@ def services_html():
                     % (i * .12, num(i), t(x['title']), t(x.get('text')), t(x.get('get'))) for i, x in enumerate(c.get('process', [])))
     out += ('<section class="cut px sw pr"><span class="lab">%s</span><h2 class="d rv">%s</h2><ol class="pr4">%s</ol></section>'
             % (t(c.get('process_label')), br(c.get('process_heading')), steps))
-    return out + call_html()
+    return out + faq_html() + call_html()
 
 
 def notfound_html():
@@ -478,7 +475,7 @@ FAQ_LD = json.dumps({'@context': 'https://schema.org', '@type': 'FAQPage', 'main
     {'@type': 'Question', 'name': f['q'], 'acceptedAnswer': {'@type': 'Answer', 'text': f['a']}} for f in HOME.get('faq', [])]}, ensure_ascii=False) if HOME.get('faq') else ''
 for key, data in (('home', HOME), ('work', WORK), ('about', ABOUT), ('journal', JOURNAL), ('contact', CONTACT), ('services', SERVICES), ('book', BOOK)):
     path = '/' if key == 'home' else '/%s/' % key
-    write(path, page(path, key, data['seo_title'], data.get('seo_description') or S['seo_description'], extra_ld=FAQ_LD if key == 'home' else ''))
+    write(path, page(path, key, data['seo_title'], data.get('seo_description') or S['seo_description'], extra_ld=FAQ_LD if key == 'services' else ''))
     urls.append(path)
 for i, p in enumerate(PROJECTS):
     path = '/work/%s/' % p['slug']

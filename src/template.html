@@ -69,6 +69,18 @@ nav ul a.on:after{clip-path:polygon(0 0,100% 0,92% 100%,0 100%)}
 .cs .bt{position:relative;z-index:2}.cs .bt p{max-width:30ch;font-size:clamp(17px,1.5vw,22px);margin-top:18px}.cs .tp{gap:20px}
 .cs .go{right:var(--g)}.ar{will-change:translate}
 .allw a{display:block}.allw .d{display:block;font-size:clamp(64px,19vw,340px);transition:transform .8s cubic-bezier(.22,1,.36,1)}.allw a:hover .d{transform:translateX(2.5vw)}
+/* home: what we do */
+.mn .lab{display:block;margin-bottom:calc(var(--gap)*.6)}
+.mn h2.svh2{max-width:none;font-size:clamp(44px,9.2vw,168px);line-height:.9}
+.mnf{display:flex;justify-content:space-between;align-items:end;gap:var(--g);margin-top:var(--gap);flex-wrap:wrap}
+.mn .mnf small{margin-top:0}
+.mnf .lk{font-weight:600;border-bottom:2px solid currentColor;padding-bottom:2px;white-space:nowrap}
+.mnf .lk span{display:inline-block;transition:transform .3s}.mnf .lk:hover span{transform:translateX(5px)}
+/* home: all work is one line, not a full screen */
+.allw{padding-bottom:clamp(40px,7vh,80px)}
+.allw .d{font-size:clamp(48px,9vw,160px)}
+.allw .d i{font-style:normal;display:inline-block;color:var(--b);transition:transform .8s cubic-bezier(.22,1,.36,1)}
+.allw a:hover .d i{transform:translateX(1.5vw)}
 .ft{padding-bottom:28px}.ft .big{margin-top:var(--gap)}.ft .f{margin-top:clamp(28px,5vh,56px)}.ft a.mail{margin:var(--gap) 0 0}.ft h2{max-width:11ch}
 .crw{margin-top:var(--gap)}.crw svg{clip-path:polygon(0 100%,100% 100%,100% 100%,0 100%);transition:clip-path 1.5s cubic-bezier(.77,0,.18,1)}.crw.in svg{clip-path:polygon(0 0,100% 0,100% 100%,0 100%)}.ft .crw .big{margin-top:0}
 /* art library */
@@ -419,7 +431,7 @@ function chk(id,ok){var l=$(id).closest('.fl');l.classList.toggle('err',!ok);ret
 ['fn','fe','fm'].forEach(function(id){$(id).addEventListener('input',function(){$(id).closest('.fl').classList.remove('err')})});
 $('bf').addEventListener('submit',function(ev){ev.preventDefault();var a=chk('fn',$('fn').value.trim()),b=chk('fe',/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test($('fe').value.trim())),c=chk('fm',$('fm').value.trim().length>3);if(!(a&&b&&c)){var f=document.querySelector('.fl.err input,.fl.err textarea');if(f)f.focus();return}var n=pick('need');$('fneeds').value=n;$('fskus').value=pick('skus');$('ftime').value=pick('tml');
  var fd=new FormData($('bf')),q=new URLSearchParams(fd).toString(),btn=$('snd');btn.disabled=true;btn.textContent='Sending…';
- var mail=function(){var body='Name: '+$('fn').value+'\nEmail: '+$('fe').value+'\nCompany: '+$('fc').value+'\nNeed: '+n+'\nSKUs: '+$('fskus').value+'\nLaunch: '+$('ftime').value+'\n\n'+$('fm').value;location.href='mailto:{{email}}?subject='+encodeURIComponent('New '+(n&&n!='Not sure yet'?n:'project')+' brief'+($('fc').value?' - '+$('fc').value:''))+'&body='+encodeURIComponent(body)};
+ var mail=function(){var body='Name: '+$('fn').value+'\nEmail: '+$('fe').value+'\nCompany: '+$('fc').value+'\nNeed: '+n+($('fskus').value?'\nSKUs: '+$('fskus').value:'')+($('ftime').value?'\nLaunch: '+$('ftime').value:'')+'\n\n'+$('fm').value;location.href='mailto:{{email}}?subject='+encodeURIComponent('New '+(n&&n!='Not sure yet'?n:'project')+' brief'+($('fc').value?' - '+$('fc').value:''))+'&body='+encodeURIComponent(body)};
  fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:q}).then(function(r){if(!r.ok)throw 0;$('ok').classList.add('on');btn.textContent='Sent';$('bf').querySelectorAll('input:not([type=hidden]),textarea').forEach(function(i){i.value=''});$('bf').querySelectorAll('.chip.on').forEach(function(b){b.classList.remove('on')})})
  .catch(function(){btn.disabled=false;btn.textContent=btn.dataset.l;mail()})});
 /* magnetic controls */

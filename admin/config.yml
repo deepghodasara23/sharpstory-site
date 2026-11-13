@@ -113,16 +113,12 @@ collections:
           - { name: hero_heading, label: Hero heading, widget: text }
           - { name: hero_text, label: Hero text, widget: text }
           - { name: hero_label, label: Corner label, widget: string }
-          - { name: manifesto_heading, label: Statement heading, widget: text }
-          - { name: manifesto_text, label: Statement text, widget: text }
+          - { name: manifesto_text, label: "What we do: intro text", widget: text, hint: "Sits under the three services on the home page." }
           - { name: featured_count, label: Projects on home page, widget: number, value_type: int, min: 1, max: 8, default: 4 }
           - { name: all_work_label, label: Label above "All work", widget: string }
-          - { name: services_label, label: Services label, widget: string }
-          - { name: services_heading, label: Services heading, widget: text }
-          - { name: services_more_heading, label: Closing row heading, widget: string, hint: "The last row under the services, linking to the Services page." }
-          - { name: services_more_text, label: Closing row text, widget: text }
+          - { name: services_label, label: "What we do: label", widget: string }
           - { name: services_link, label: Link to the Services page, widget: string, hint: "The services themselves are edited in Pages → Services." }
-          - { name: faq_label, label: FAQ label, widget: string }
+          - { name: faq_label, label: FAQ label, widget: string, hint: "The FAQ is shown on the Services page." }
           - { name: faq_heading, label: FAQ heading, widget: text }
           - name: faq
             label: FAQ
@@ -234,10 +230,10 @@ collections:
           - { name: lead, label: Intro, widget: text }
           - { name: needs_label, label: Services question, widget: string }
           - { name: needs, label: Service options, widget: list, field: { name: option, label: Option, widget: string } }
-          - { name: skus_label, label: SKU question, widget: string }
-          - { name: skus, label: SKU options, widget: list, field: { name: option, label: Option, widget: string } }
-          - { name: timeline_label, label: Timeline question, widget: string }
-          - { name: timeline, label: Timeline options, widget: list, field: { name: option, label: Option, widget: string } }
+          - { name: skus_label, label: SKU question, widget: string, required: false, hint: "Optional. Leave the options empty to keep the form short." }
+          - { name: skus, label: SKU options, widget: list, required: false, field: { name: option, label: Option, widget: string } }
+          - { name: timeline_label, label: Timeline question, widget: string, required: false }
+          - { name: timeline, label: Timeline options, widget: list, required: false, field: { name: option, label: Option, widget: string } }
           - { name: message_placeholder, label: Message hint, widget: string }
           - { name: button, label: Button text, widget: string }
           - { name: form_note, label: Note under the button, widget: string }
