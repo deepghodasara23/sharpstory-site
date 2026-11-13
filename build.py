@@ -188,6 +188,11 @@ def social_links(sep):
     return sep.join('<a href="%s" target="_blank" rel="noopener">%s</a>' % (at(u), lab) for lab, u in SOCIALS)
 
 
+def clip(x, n=155):
+    x = re.sub(r'\s+', ' ', str(x or '')).strip()
+    return x if len(x) <= n else x[:x.rfind(' ', 0, n - 1)] + '…'
+
+
 # ---------- page sections ----------
 def home_html():
     h = HOME
@@ -196,8 +201,14 @@ def home_html():
            '<div class="hf R" id="R"><svg class="wmb" viewBox="0 0 578.45 61.54" aria-hidden="true"><use href="#wm"/></svg><p>Scroll to cut <i></i></p></div></div></header>'
            % (br(h['hero_heading']), t(h['hero_text']), t(h.get('hero_label'))))
     svc = SERVICES.get('services', [])
-    out += ('<section class="cut mn"><div id="mnr"><h2 class="d">%s</h2></div><p class="sv">%s</p><small>%s</small></section>'
-            % (lines(h['manifesto_heading']), '<i class="sp"></i>'.join(t(s['title']) for s in svc), t(h['manifesto_text'])))
+    # What we do: the three disciplines as one big statement, then the short intro and a link to the detail.
+    out += ('<section class="cut mn"><span class="lab">%s</span><div id="mnr"><h2 class="e svh2">%s</h2></div>'
+            '<div class="mnf"><small>%s</small><div class="mnl"><a class="lk" href="/services/">%s <span>→</span></a>%s</div></div></section>'
+            % (t(h.get('services_label') or 'What we do'), lines('\n'.join(s['title'] for s in svc)), t(h['manifesto_text']),
+               t(h.get('services_link') or 'See services and process'),
+               # the featured journal article shows the studio's specialism, so it gets a link here
+               '<a class="jp" href="/journal/%s/"><span class="lab">%s</span>%s <span>→</span></a>' % (ARTICLES[0]['slug'], t(h.get('journal_label') or 'From the journal'), t(ARTICLES[0]['title']))
+               if ARTICLES else ''))
     feat = [p for p in PROJECTS if p.get('show_on_home')][:max(1, int(h.get('featured_count') or 4))]
     out += '<section id="hw">'
     for k, p in enumerate(feat):
@@ -210,15 +221,9 @@ def home_html():
                    at(url_css(p.get('cover_image'))), '<br>'.join(t(w) for w in p['title'].split(' ')), t(p.get('tagline')),
                    p['slug'], 'View concept' if concept else 'Read case study'))
     out += '</section>'
-    out += ('<section class="cut px sw allw"><a href="/work/" data-cur="Open"><span class="lab">%s</span><span class="d">All work</span></a></section>'
+    out += ('<section class="cut px sw allw"><a href="/work/" data-cur="Open"><span class="lab">%s</span><span class="d">All work <i>→</i></span></a></section>'
             % t(h.get('all_work_label')))
-    out += '<section class="cut px sb"><span class="lab">%s</span><h2 class="d svh">%s</h2>' % (t(h.get('services_label')), br(h.get('services_heading')))
-    for i, s in enumerate(svc):
-        out += ('<div class="svc rv"><span>%s</span><h3 class="d">%s</h3><div><p class="sl">%s</p><p>%s</p><ul>%s</ul></div></div>'
-                % (num(i), t(s['title']), t(s.get('line')), t(s.get('text')), ''.join('<li>%s</li>' % t(x) for x in s.get('includes', []))))
-    out += ('<div class="svc svx rv"><span></span><p class="svq">%s</p><div><p>%s</p><a class="lk" href="/services/">%s <span>→</span></a></div></div></section>'
-            % (t(h.get('services_more_heading') or 'Want the detail?'), t(h.get('services_more_text')), t(h.get('services_link') or 'See services and process')))
-    return out + call_html('sk') + faq_html()
+    return out + call_html('sk')
 
 
 def call_html(cls='sb'):
@@ -240,7 +245,7 @@ def faq_html():
 
 def services_html():
     c = SERVICES
-    out = ('<section class="pg px sk"><span class="lab">%s</span><h1 class="d hh mk">%s</h1><p class="lead rv">%s</p></section>'
+    out = ('<section class="pg px sk"><span class="lab">%s</span><h1 class="e hh mk">%s</h1><p class="lead rv">%s</p></section>'
            % (t(c.get('label')), lines(c['heading']), t(c.get('lead'))))
     rows = ''
     for i, x in enumerate(c.get('services', [])):
@@ -254,11 +259,11 @@ def services_html():
                     % (i * .12, num(i), t(x['title']), t(x.get('text')), t(x.get('get'))) for i, x in enumerate(c.get('process', [])))
     out += ('<section class="cut px sw pr"><span class="lab">%s</span><h2 class="d rv">%s</h2><ol class="pr4">%s</ol></section>'
             % (t(c.get('process_label')), br(c.get('process_heading')), steps))
-    return out + call_html()
+    return out + faq_html() + call_html()
 
 
 def notfound_html():
-    return ('<section class="pg px sk nf"><span class="lab">404</span><h1 class="d hh mk">%s</h1><p class="lead rv">%s</p>'
+    return ('<section class="pg px sk nf"><span class="lab">404</span><h1 class="e hh mk">%s</h1><p class="lead rv">%s</p>'
             '<div class="nfb"><a class="fbtn pri" href="/">Go to the home page <span>→</span></a><a class="fbtn" href="/work/">See the work <span>→</span></a>'
             '<a class="fbtn" href="/book/">Book a free call <span>→</span></a></div></section>'
             % (lines('Nothing\nhere.'), 'The page you were looking for has moved or never existed.'))
@@ -269,7 +274,7 @@ def book_html():
     pts = ''.join('<li class="rv"><span>%s</span><p>%s</p></li>' % (num(i), t(x)) for i, x in enumerate(c.get('points', [])))
     u = c.get('booking_url', '').strip()
     embed = u + ('&' if '?' in u else '?') + 'gv=true'
-    return ('<section class="pg px sk bkh"><span class="lab">%s</span><h1 class="d hh mk">%s</h1><p class="lead rv">%s</p></section>'
+    return ('<section class="pg px sk bkh"><span class="lab">%s</span><h1 class="e hh mk">%s</h1><p class="lead rv">%s</p></section>'
             '<section class="px sk bkb"><div class="bkg"><div><span class="lab">%s</span><ol class="shl">%s</ol>'
             '<p class="bkn"><a href="%s" target="_blank" rel="noopener">%s ↗</a><a href="/contact/">%s →</a></p></div>'
             '<div class="bkf rv" data-lenis-prevent><iframe data-src="%s" title="Book a free brand clarity call" loading="lazy"></iframe></div></div></section>'
@@ -281,9 +286,15 @@ def work_html():
     w = WORK
     pick = lambda p: p.get('gallery_image') or p.get('cover_image')
     tiles = ''.join(
-        '<a class="tile t%d" href="/work/%s/" data-cur="View" data-t="%s"><div class="im">%s<span class="no">%s</span></div>'
-        '<div class="tc"><h3>%s</h3><span>%s</span></div></a>'
-        % (i % 6 + 1, p['slug'], tags(p), img_tag(pick(p), '%s, %s' % (p['title'], p['sector'].lower()), 'v', '(max-width: 800px) 100vw, 55vw'), num(i), t(p['title']), t(p['sector']))
+        '<article class="tile wr%s" data-t="%s"><span class="wg e" aria-hidden="true">%s</span>'
+        '<a class="wi" href="/work/%s/" data-cur="View" tabindex="-1" aria-hidden="true"><div class="im">%s</div></a>'
+        '<div class="wt"><span class="lab">%s %s · %s</span><h2 class="e"><a href="/work/%s/">%s</a></h2><p class="wl">%s</p>'
+        '<ul class="wtags">%s</ul><p class="wx">%s</p><a class="lk" href="/work/%s/">%s <span>→</span></a></div></article>'
+        % (' r' if i % 2 else '', tags(p), t(p['title']), p['slug'],
+           img_tag(p.get('cover_image') or pick(p), '%s, %s' % (p['title'], p['sector'].lower()), 'v', '(max-width: 800px) 100vw, 60vw'),
+           'Concept' if p.get('concept') else 'Case study', num(i), t(p['sector']), p['slug'], t(p['title']), t(p.get('tagline')),
+           ''.join('<li>%s</li>' % t(x) for x in p.get('services', [])), t(clip(p.get('challenge'), 170)),
+           p['slug'], 'View concept' if p.get('concept') else 'Read case study')
         for i, p in enumerate(PROJECTS))
     rows = ''.join(
         '<a class="jr ir" href="/work/%s/" data-cur="View" data-t="%s" data-img="%s"><span>%s</span><h3 class="d">%s</h3><span>%s</span><span>%s</span></a>'
@@ -291,8 +302,8 @@ def work_html():
         for i, p in enumerate(PROJECTS))
     chips = ('<button class="chip on" data-f="all">All</button><button class="chip" data-f="strategy">Brand strategy</button>'
              '<button class="chip" data-f="branding">Branding</button><button class="chip" data-f="packaging">Packaging</button>')
-    return ('<section class="pg px sk wk2" id="wk" data-m="gal"><span class="lab">Work</span><h1 class="d hh mk">%s</h1><p class="lead rv">%s</p>'
-            '<div class="bar2"><div class="flt" id="flt">%s</div><div class="flt" id="vt"><button class="chip on" data-m="gal">Gallery</button><button class="chip" data-m="idx">Index</button></div></div>'
+    return ('<section class="pg px sk wk2" id="wk" data-m="gal"><span class="lab">Work</span><h1 class="e hh mk">%s</h1><p class="lead rv">%s</p>'
+            '<div class="bar2"><div class="flt" id="flt">%s</div><div class="flt" id="vt"><button class="chip on" data-m="gal">Visual</button><button class="chip" data-m="idx">Index</button></div></div>'
             '<div class="gal">%s</div><div class="idx">%s</div></section>'
             % (lines(w['heading']), t(w['lead']), chips, tiles, rows))
 
@@ -301,7 +312,7 @@ def about_html():
     a = ABOUT
     photo = img(a.get('founder_photo'))
     face = '<i style="background:%s center/cover"></i>' % at(url_css(photo)) if photo else '<i></i>'
-    out = ('<section class="pg px sw"><span class="lab">About</span><h1 class="d hh mk">%s</h1><p class="lead rv">%s</p></section>'
+    out = ('<section class="pg px sw"><span class="lab">About</span><h1 class="e hh mk">%s</h1><p class="lead rv">%s</p></section>'
            % (lines(a['heading']), t(a['lead'])))
     out += ('<section class="cut px sk"><div class="s2 ab"><h2 class="d rv">%s</h2><div class="rv">%s<div class="fd">%s<div><b>%s</b>%s</div></div></div></div></section>'
             % (t(a['statement']), ''.join('<p>%s</p>' % t(x) for x in a.get('story', [])), face, t(a.get('founder_name')), t(a.get('founder_role'))))
@@ -310,15 +321,12 @@ def about_html():
     out += ('<section class="cut px sk"><span class="lab">%s</span>%s</section>'
             % (t(a.get('principles_label')), ''.join('<div class="pc rv"><span>%s</span><h3 class="d">%s</h3><p>%s</p></div>' % (num(i), t(x['title']), t(x['text']))
                                                       for i, x in enumerate(a.get('principles', [])))))
-    out += ('<section class="cut px sb"><span class="lab">%s</span><h2 class="d" style="font-size:clamp(44px,9vw,160px)">%s</h2><ol class="tl" id="tl">%s</ol></section>'
-            % (t(a.get('process_label')), t(a.get('process_heading')),
-               ''.join('<li><span>%s</span><h3 class="d">%s</h3><p>%s</p></li>' % (num(i), t(x['title']), t(x['text'])) for i, x in enumerate(a.get('process', [])))))
-    return out
+    return out + call_html()
 
 
 def journal_html():
     j = JOURNAL
-    out = ('<section class="pg px sw"><span class="lab">Journal</span><h1 class="d hh mk">%s</h1><p class="lead rv">%s</p></section>'
+    out = ('<section class="pg px sw"><span class="lab">Journal</span><h1 class="e hh mk">%s</h1><p class="lead rv">%s</p></section>'
            % (lines(j['heading']), t(j['lead'])))
     if ARTICLES:
         f = ARTICLES[0]
@@ -341,7 +349,7 @@ def contact_html():
                     for k, gid in (('skus', 'skus'), ('timeline', 'tml')) if c.get(k))
     steps = ''.join('<p>%d. %s</p>' % (i + 1, t(x)) for i, x in enumerate(c.get('next_steps', [])))
     social = ('<div><h4>Elsewhere</h4><p>%s</p></div>' % social_links(' · ')) if SOCIALS else ''
-    return ('<section class="pg px sk"><span class="lab">Contact</span><h1 class="d hh mk">%s</h1><p class="lead rv">%s</p><div class="ct">'
+    return ('<section class="pg px sk"><span class="lab">Contact</span><h1 class="e hh mk">%s</h1><p class="lead rv">%s</p><div class="ct">'
             '<form name="brief" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="bf" novalidate><input type="hidden" name="form-name" value="brief">'
             '<input type="hidden" name="needs" id="fneeds"><input type="hidden" name="skus" id="fskus"><input type="hidden" name="timeline" id="ftime"><p hidden><label>Leave this empty <input name="bot-field"></label></p>'
             '<label class="fl"><span>Your name</span><input id="fn" name="name" autocomplete="name" required><em class="em">Please add your name.</em></label>'
@@ -433,7 +441,7 @@ js_str = lambda v: json.dumps(v, ensure_ascii=False).replace('</', '<\\/')
 BASE = (T.replace('{{home}}', home_html()).replace('{{work}}', work_html()).replace('{{about}}', about_html())
         .replace('{{journal}}', journal_html()).replace('{{contact}}', contact_html()).replace('{{footer}}', footer_html())
         .replace('{{services}}', services_html()).replace('{{notfound}}', notfound_html()).replace('{{book}}', book_html())
-        .replace('{{nav_cta}}', t(S.get('nav_cta') or 'Book a free call')).replace('{{nav_cta_short}}', t(S.get('nav_cta_short') or 'Free call'))
+        .replace('{{menu_social}}', social_links('')).replace('{{nav_cta}}', t(S.get('nav_cta') or 'Book a free call')).replace('{{nav_cta_short}}', t(S.get('nav_cta_short') or 'Free call'))
         .replace('{{data}}', js_str(DATA)).replace('{{tt}}', js_str(TT)).replace('{{email}}', EMAIL.replace("'", "\\'")))
 assert '{{' not in BASE.replace('{{head}}', ''), re.findall(r'\{\{\w+\}\}', BASE)
 
@@ -442,9 +450,6 @@ LD = json.dumps({'@context': 'https://schema.org', '@type': 'Organization', 'nam
                  'knowsAbout': ['Brand strategy', 'Branding', 'Visual identity', 'Packaging design'], 'email': EMAIL}, ensure_ascii=False)
 
 
-def clip(x, n=155):
-    x = re.sub(r'\s+', ' ', str(x or '')).strip()
-    return x if len(x) <= n else x[:x.rfind(' ', 0, n - 1)] + '…'
 
 
 def page(path, view, title, desc, inner=None, noindex=False, extra_ld=''):
@@ -478,7 +483,7 @@ FAQ_LD = json.dumps({'@context': 'https://schema.org', '@type': 'FAQPage', 'main
     {'@type': 'Question', 'name': f['q'], 'acceptedAnswer': {'@type': 'Answer', 'text': f['a']}} for f in HOME.get('faq', [])]}, ensure_ascii=False) if HOME.get('faq') else ''
 for key, data in (('home', HOME), ('work', WORK), ('about', ABOUT), ('journal', JOURNAL), ('contact', CONTACT), ('services', SERVICES), ('book', BOOK)):
     path = '/' if key == 'home' else '/%s/' % key
-    write(path, page(path, key, data['seo_title'], data.get('seo_description') or S['seo_description'], extra_ld=FAQ_LD if key == 'home' else ''))
+    write(path, page(path, key, data['seo_title'], data.get('seo_description') or S['seo_description'], extra_ld=FAQ_LD if key == 'services' else ''))
     urls.append(path)
 for i, p in enumerate(PROJECTS):
     path = '/work/%s/' % p['slug']

@@ -1,7 +1,7 @@
 {
   "seo_title": "Start a project — Sharp Story",
   "seo_description": "Start a project with Sharp Story. Tell us what you’re building and we’ll reply personally.",
-  "heading": "Let’s make\nsomething sharp.",
+  "heading": "Tell us about\nyour brand.",
   "lead": "Tell us what you’re building and where you want it to go. We take on a small number of projects at a time, so every enquiry is read and answered personally.",
   "needs_label": "What can we help with?",
   "needs": [
@@ -20,20 +20,6 @@
     "We read your brief and come back with a few questions.",
     "A call to understand the business, the ambition and what’s in the way.",
     "A proposal with approach, scope, timeline and investment."
-  ],
-  "skus_label": "How many SKUs?",
-  "skus": [
-    "1",
-    "2–5",
-    "6–15",
-    "15+"
-  ],
-  "timeline_label": "When do you need to launch?",
-  "timeline": [
-    "Within 1 month",
-    "1–3 months",
-    "3+ months",
-    "Exploring"
   ],
   "call_heading": "Prefer to talk?",
   "call_text": "Book a free 30-minute call instead."
