@@ -110,12 +110,19 @@ collections:
         file: content/home.json
         fields:
           - { name: seo_title, label: Browser and Google title, widget: string }
-          - { name: hero_heading, label: Hero heading, widget: text }
+          - { name: hero_label, label: Hero label, widget: string }
+          - { name: hero_heading, label: Hero heading, widget: text, hint: "One line per row. Wrap words in *stars* for italic." }
           - { name: hero_text, label: Hero text, widget: text }
-          - { name: hero_label, label: Corner label, widget: string }
+          - { name: hero_corner, label: Hero bottom-left line, widget: string, required: false }
+          - { name: hero_cube_note, label: Hint under the pack, widget: string, required: false }
+          - { name: intro_lines, label: Intro captions (three), widget: list, required: false, field: { name: line, label: Line, widget: string } }
           - { name: manifesto_text, label: "What we do: intro text", widget: text, hint: "Sits under the three services on the home page." }
-          - { name: featured_count, label: Projects on home page, widget: number, value_type: int, min: 1, max: 8, default: 4 }
-          - { name: all_work_label, label: Label above "All work", widget: string }
+          - { name: aisle_label, label: "Shelf: label", widget: string }
+          - { name: aisle_heading, label: "Shelf: heading", widget: text, hint: "One line per row. *stars* for italic." }
+          - { name: aisle_text, label: "Shelf: short text", widget: text }
+          - { name: featured_count, label: Projects on the shelf, widget: number, value_type: int, min: 1, max: 8, default: 4, hint: "The first projects marked \"Show on home page\" are used, also on the pack in the hero." }
+          - { name: aisle_end, label: "Shelf: last card", widget: string }
+          - { name: all_work_label, label: "Shelf: last card small text", widget: string }
           - { name: services_label, label: "What we do: label", widget: string }
           - { name: services_link, label: Link to the Services page, widget: string, hint: "The services themselves are edited in Pages → Services." }
           - { name: journal_label, label: "What we do: journal link label", widget: string, required: false, hint: "Links to the featured journal article." }

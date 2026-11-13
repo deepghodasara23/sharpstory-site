@@ -1,8 +1,8 @@
 {
   "seo_title": "Sharp Story: Branding and packaging for D2C and FMCG brands",
-  "hero_heading": "Brands, cut down\nto one idea.",
+  "hero_heading": "Brands, cut\ndown to\n*one idea.*",
   "hero_text": "An independent branding and packaging studio for D2C and FMCG brands.",
-  "hero_label": "Branding studio",
+  "hero_label": "Branding and packaging studio",
   "manifesto_text": "We find the one idea your brand can own, then build the identity and packaging around it, so it reads clearly on the shelf, on screen and in the smallest quick-commerce thumbnail.",
   "featured_count": 4,
   "all_work_label": "Six brand concepts",
@@ -36,5 +36,16 @@
     }
   ],
   "services_link": "See services and process",
-  "journal_label": "From the journal"
+  "journal_label": "From the journal",
+  "hero_corner": "Strategy · Identity · Packaging",
+  "hero_cube_note": "Drag the pack",
+  "intro_lines": [
+    "Every brand starts flat.",
+    "Strategy gives it shape.",
+    "Then we cut it to one idea."
+  ],
+  "aisle_label": "On the shelf",
+  "aisle_heading": "Brands built\nto be *picked.*",
+  "aisle_text": "Packs and identities designed for three seconds on a shelf and one thumbnail on a screen.",
+  "aisle_end": "All *work*"
 }

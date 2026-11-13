@@ -193,37 +193,96 @@ def clip(x, n=155):
     return x if len(x) <= n else x[:x.rfind(' ', 0, n - 1)] + '…'
 
 
+
+# ---------- packaging pieces: the folding pack, barcodes, the intro ----------
+def sym_svg(cls):
+    """The Sharp Story symbol (ring + S), taken from the nav so there is one source."""
+    m = re.search(r'<svg class="sym" viewBox="0 0 1149 1149" fill="currentColor" aria-hidden="true">(.*?)</svg>', T, re.S)
+    return '<svg class="%s" viewBox="0 0 1149 1149" fill="currentColor" aria-hidden="true">%s</svg>' % (cls, m.group(1).replace(' class="m"', ''))
+
+
+def cube_html(cls, faces):
+    """A box built from its dieline: front panel with top, base, sides and back hinged to it.
+    faces: dict F, T, B, L, R, K -> (inner html, inline style)."""
+    def face(k, kids=''):
+        inner, style = faces.get(k, ('', ''))
+        return '<div class="pf p%s"><div class="fs"%s>%s</div>%s</div>' % (k, ' style="%s"' % at(style) if style else '', inner, kids)
+    return ('<div class="bx %s" aria-hidden="true"><div class="bxr">%s</div></div>'
+            % (cls, face('F', face('T') + face('B') + face('L') + face('R', face('K')))))
+
+
+def barcode(seed):
+    """A decorative barcode, the same every build for the same project."""
+    h = 0
+    for ch in seed:
+        h = (h * 131 + ord(ch)) % 2147483647
+    x, bars = 0, []
+    while x < 64:
+        h = (h * 48271) % 2147483647
+        w = 1 + h % 3
+        h = (h * 48271) % 2147483647
+        gap = 1 + h % 2
+        bars.append('<rect x="%d" width="%d" height="22"/>' % (x, w))
+        x += w + gap
+    return '<svg class="bc" viewBox="0 0 %d 22" aria-hidden="true">%s</svg>' % (x, ''.join(bars))
+
+
+def intro_html():
+    lab = lambda x: '<i>%s</i>' % x
+    faces = {'F': (sym_svg('isy') + lab('Front panel'), ''), 'T': (lab('Top flap'), ''), 'B': (lab('Base'), ''),
+             'L': (lab('Side'), ''), 'R': (lab('Side'), ''), 'K': (lab('Back panel'), '')}
+    caps = HOME.get('intro_lines') or ['Every brand starts flat.', 'Strategy gives it shape.', 'Then we cut it to one idea.']
+    scene = ('<div class="isc">%s<p class="icap">%s</p></div>'
+             % (cube_html('bxi', faces), ''.join('<span style="--cd:%.2fs">%s</span>' % (.35 + i * 1.12, t(c)) for i, c in enumerate(caps[:3]))))
+    return ('<div class="intro" id="intro" aria-hidden="true"><div class="ih L2">%s</div><div class="ih R2">%s</div>'
+            '<svg class="icut" viewBox="0 0 100 100" preserveAspectRatio="none"><line x1="58" y1="-2" x2="42" y2="102" pathLength="1"/></svg>'
+            '<span class="ibrand">Sharp Story</span><button class="iskip" id="iskip" type="button">Skip intro</button></div>' % (scene, scene))
+
+
+def md_line(x):
+    """One line of a heading with *italic* allowed."""
+    return re.sub(r'\*(.+?)\*', r'<em>\1</em>', t(x))
+
+
 # ---------- page sections ----------
 def home_html():
     h = HOME
-    out = ('<h1 class="sr">%s</h1>' % t(S.get('site_name', 'Sharp Story') + ': ' + (h.get('hero_text') or ''))) + ('<header class="hs" id="top"><div class="st" id="st"><div class="gap"><h2 class="d">%s</h2><p>%s</p></div>'
-           '<div class="hf L" id="L"><svg class="wmb" viewBox="0 0 578.45 61.54" role="img" aria-label="Sharp Story"><use href="#wm"/></svg><p>%s</p></div>'
-           '<div class="hf R" id="R"><svg class="wmb" viewBox="0 0 578.45 61.54" aria-hidden="true"><use href="#wm"/></svg><p>Scroll to cut <i></i></p></div></div></header>'
-           % (br(h['hero_heading']), t(h['hero_text']), t(h.get('hero_label'))))
     svc = SERVICES.get('services', [])
-    # What we do: the three disciplines as one big statement, then the short intro and a link to the detail.
-    out += ('<section class="cut mn"><span class="lab">%s</span><div id="mnr"><h2 class="e svh2">%s</h2></div>'
-            '<div class="mnf"><small>%s</small><div class="mnl"><a class="lk" href="/services/">%s <span>→</span></a>%s</div></div></section>'
-            % (t(h.get('services_label') or 'What we do'), lines('\n'.join(s['title'] for s in svc)), t(h['manifesto_text']),
-               t(h.get('services_link') or 'See services and process'),
-               # the featured journal article shows the studio's specialism, so it gets a link here
-               '<a class="jp" href="/journal/%s/"><span class="lab">%s</span>%s <span>→</span></a>' % (ARTICLES[0]['slug'], t(h.get('journal_label') or 'From the journal'), t(ARTICLES[0]['title']))
-               if ARTICLES else ''))
     feat = [p for p in PROJECTS if p.get('show_on_home')][:max(1, int(h.get('featured_count') or 4))]
-    out += '<section id="hw">'
+    # hero: the statement and the pack, whose faces carry the work
+    imgs = [p for p in feat] + [p for p in PROJECTS if p not in feat]
+    face = lambda k: ('', 'background-image:%s' % url_css(imgs[k].get('cover_image'))) if k < len(imgs) else ('', '')
+    faces = {'F': (sym_svg('hsy'), ''), 'R': face(0), 'K': face(1), 'L': face(2), 'T': face(3), 'B': face(4)}
+    out = '<h1 class="sr">%s</h1>' % t(S.get('site_name', 'Sharp Story') + ': ' + (h.get('hero_text') or ''))
+    out += ('<header class="hr" id="top"><div class="hrt"><span class="lab">%s</span><h2 class="d hrh" id="hrh">%s</h2><p class="hrp">%s</p></div>'
+            '<div class="hrc" id="hrc">%s<span class="hrn">%s</span></div>'
+            '<div class="hrb"><span>%s</span><span class="hrs">Scroll <i></i></span></div></header>'
+            % (t(h.get('hero_label')), ''.join('<span class="ln"><span>%s</span></span>' % md_line(l) for l in str(h['hero_heading']).split('\n') if l.strip()),
+               t(h['hero_text']), cube_html('bxh', faces), t(h.get('hero_cube_note') or 'Drag the pack'), t(h.get('hero_corner') or 'Branding and packaging')))
+    # the shelf: projects as packs on a shelf, each with a shelf-edge label
+    cards = ''
     for k, p in enumerate(feat):
         i = PROJECTS.index(p)
         concept = p.get('concept')
-        out += ('<div class="cs %s" data-cur="Open" data-go="case-%s"><div class="tp"><span>%s %s</span><span>%s · %s</span></div>'
-                '<div class="ar" data-bg="%s"></div><div class="bt"><h3 class="d">%s</h3><p>%s</p></div>'
-                '<a class="go" href="/work/%s/">%s</a></div>'
-                % ('kwkb'[k % 4], p['slug'], 'Concept' if concept else 'Case study', num(i), t(p['sector']), t(', '.join(p.get('services', []))),
-                   at(url_css(p.get('cover_image'))), '<br>'.join(t(w) for w in p['title'].split(' ')), t(p.get('tagline')),
-                   p['slug'], 'View concept' if concept else 'Read case study'))
-    out += '</section>'
-    out += ('<section class="cut px sw allw"><a href="/work/" data-cur="Open"><span class="lab">%s</span><span class="d">All work <i>→</i></span></a></section>'
-            % t(h.get('all_work_label')))
-    return out + call_html('sk')
+        cards += ('<a class="ac" href="/work/%s/" data-cur="View"><div class="aci" data-bg="%s"></div>'
+                  '<div class="acl"><div><span class="d">%s</span><small>%s</small></div>%s'
+                  '<small class="acs">%s %s · %s</small></div></a>'
+                  % (p['slug'], at(url_css(p.get('cover_image'))), t(p['title']), t(p['sector']), barcode(p['slug']),
+                     'Concept' if concept else 'Case study', num(i), t(', '.join(p.get('services', [])))))
+    cards += ('<a class="ac ace" href="/work/" data-cur="Open"><div class="aci"><span class="d">%s</span><small>%s</small></div></a>'
+              % (md_line(h.get('aisle_end') or 'All *work*'), t(h.get('all_work_label'))))
+    out += ('<section class="ai" id="ai"><div class="ais"><div class="aih"><div><span class="lab">%s</span><h2 class="d">%s</h2></div>'
+            '<p>%s</p></div><div class="aitr" id="aitr">%s</div><div class="aip"><i id="aip"></i></div></div></section>'
+            % (t(h.get('aisle_label') or 'On the shelf'), '<br>'.join(md_line(l) for l in str(h.get('aisle_heading') or '').split('\n') if l.strip()),
+               t(h.get('aisle_text')), cards))
+    # what we do
+    out += ('<section class="cut mn"><span class="lab">%s</span><div id="mnr"><h2 class="e svh2">%s</h2></div>'
+            '<div class="mnf"><small>%s</small><div class="mnl"><a class="lk" href="/services/">%s <span>→</span></a>%s</div></div></section>'
+            % (t(h.get('services_label') or 'What we do'), lines('\n'.join(x['title'] for x in svc)), t(h['manifesto_text']),
+               t(h.get('services_link') or 'See services and process'),
+               '<a class="jp" href="/journal/%s/"><span class="lab">%s</span>%s <span>→</span></a>' % (ARTICLES[0]['slug'], t(h.get('journal_label') or 'From the journal'), t(ARTICLES[0]['title']))
+               if ARTICLES else ''))
+    return out + call_html('sb')
 
 
 def call_html(cls='sb'):
@@ -441,7 +500,7 @@ js_str = lambda v: json.dumps(v, ensure_ascii=False).replace('</', '<\\/')
 BASE = (T.replace('{{home}}', home_html()).replace('{{work}}', work_html()).replace('{{about}}', about_html())
         .replace('{{journal}}', journal_html()).replace('{{contact}}', contact_html()).replace('{{footer}}', footer_html())
         .replace('{{services}}', services_html()).replace('{{notfound}}', notfound_html()).replace('{{book}}', book_html())
-        .replace('{{menu_social}}', social_links('')).replace('{{nav_cta}}', t(S.get('nav_cta') or 'Book a free call')).replace('{{nav_cta_short}}', t(S.get('nav_cta_short') or 'Free call'))
+        .replace('{{menu_social}}', social_links('')).replace('{{intro}}', intro_html()).replace('{{nav_cta}}', t(S.get('nav_cta') or 'Book a free call')).replace('{{nav_cta_short}}', t(S.get('nav_cta_short') or 'Free call'))
         .replace('{{data}}', js_str(DATA)).replace('{{tt}}', js_str(TT)).replace('{{email}}', EMAIL.replace("'", "\\'")))
 assert '{{' not in BASE.replace('{{head}}', ''), re.findall(r'\{\{\w+\}\}', BASE)
 
