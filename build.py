@@ -592,7 +592,7 @@ def page(path, view, title_, desc, inner, noindex=False, extra_ld='', end=True, 
             '<script>var h=document.documentElement;h.className="js";try{if(sessionStorage.getItem("pt")!==null)h.classList.add("ptin")}catch(e){}</script></head>'
             '<body data-page="%s"><a class="skip" href="#main">Skip to content</a>'
             '<div class="pt" id="pt" aria-hidden="true"><div class="ptw">%s<span class="dh" id="ptt"></span></div></div><div class="cur" id="cur" aria-hidden="true"><b></b></div>%s'
-            '<header class="top" id="top"><a class="lg" href="/" aria-label="Sharp Story, home" data-pt="Sharp Story">%s</a>'
+            '<header class="top" id="top"><a class="lg" href="/" aria-label="Sharp Story, home">%s</a>'
             '<nav class="tn" aria-label="Main">%s<a class="cta" href="/book/">%s</a><button class="mb" id="mb" type="button" aria-expanded="false" aria-controls="mn">Menu</button></nav></header>'
             '<div class="mn" id="mn"><nav aria-label="Menu">%s</nav><div class="mf"><a href="mailto:%s">%s</a>%s</div></div>'
             '<main id="main">%s</main>%s%s'
