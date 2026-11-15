@@ -237,10 +237,10 @@ collections:
           - { name: lead, label: Intro, widget: text }
           - { name: needs_label, label: Services question, widget: string }
           - { name: needs, label: Service options, widget: list, field: { name: option, label: Option, widget: string } }
-          - { name: skus_label, label: SKU question, widget: string }
-          - { name: skus, label: SKU options, widget: list, field: { name: option, label: Option, widget: string } }
-          - { name: timeline_label, label: Timeline question, widget: string }
-          - { name: timeline, label: Timeline options, widget: list, field: { name: option, label: Option, widget: string } }
+          - { name: skus_label, label: SKU question, widget: string, required: false, hint: "Optional. Leave the options empty to hide this question." }
+          - { name: skus, label: SKU options, widget: list, required: false, field: { name: option, label: Option, widget: string } }
+          - { name: timeline_label, label: Timeline question, widget: string, required: false, hint: "Optional. Leave the options empty to hide this question." }
+          - { name: timeline, label: Timeline options, widget: list, required: false, field: { name: option, label: Option, widget: string } }
           - { name: message_placeholder, label: Message hint, widget: string }
           - { name: button, label: Button text, widget: string }
           - { name: form_note, label: Note under the button, widget: string }

@@ -522,3 +522,6 @@ html.nojs .fqi .fa{grid-template-rows:1fr}
 .nf .btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:clamp(30px,5vh,50px)}
 
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;animation:none!important}}
+
+/* never show Netlify's injected badge */
+#nl-badge-frame,iframe[title*="Netlify"],[id^="netlify-"]{display:none!important}
