@@ -562,7 +562,7 @@ VER = hashlib.md5((CSS + JS).encode()).hexdigest()[:8]
 LD = json.dumps({'@context': 'https://schema.org', '@type': 'Organization', 'name': S.get('site_name', 'Sharp Story'), 'url': DOMAIN + '/',
                  'logo': DOMAIN + '/apple-touch-icon.png', 'description': S['seo_description'],
                  'knowsAbout': ['Brand strategy', 'Branding', 'Visual identity', 'Packaging design'], 'email': EMAIL}, ensure_ascii=False)
-NAV = (('Work', '/work/'), ('Services', '/services/'), ('About', '/about/'), ('Journal', '/journal/'))
+NAV = (('Work', '/work/'), ('Services', '/services/'), ('About', '/about/'), ('Journal', '/journal/'), ('Contact', '/contact/'))
 SECTION = {'work': '/work/', 'case': '/work/', 'services': '/services/', 'about': '/about/', 'journal': '/journal/', 'article': '/journal/', 'contact': '/contact/', 'book': '/book/'}
 
 
@@ -571,7 +571,7 @@ def page(path, view, title_, desc, inner, noindex=False, extra_ld='', end=True, 
     cur = SECTION.get(view)
     ac = lambda u: ' aria-current="page"' if u == cur else ''
     nav = ''.join('<a href="%s"%s>%s</a>' % (u, ac(u), l) for l, u in NAV)
-    mnav = ''.join('<a class="dh" href="%s"%s style="--i:%d"><span>%s</span></a>' % (u, ac(u), k, l) for k, (l, u) in enumerate(NAV + (('Contact', '/contact/'), (CTA, '/book/'))))
+    mnav = ''.join('<a class="dh" href="%s"%s style="--i:%d"><span>%s</span></a>' % (u, ac(u), k, l) for k, (l, u) in enumerate(NAV + ((CTA, '/book/'),)))
     msoc = ''.join('<a href="%s" target="_blank" rel="noopener">%s</a>' % (at(u), lab) for lab, u in SOCIALS)
     ogi = DOMAIN + (img(og) if og else '/og.png')
     head = ('<title>%s</title><meta name="description" content="%s"><meta property="og:title" content="%s"><meta property="og:description" content="%s">'
