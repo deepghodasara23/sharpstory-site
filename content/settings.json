@@ -6,10 +6,12 @@
   "instagram": "https://www.instagram.com/sharpstory.studio/",
   "linkedin": "https://www.linkedin.com/company/sharpstory",
   "behance": "https://www.behance.net/sharpstory",
-  "footer_label": "Start a project",
-  "footer_heading": "Let’s find your\none idea.",
-  "footer_button": "Book a free call",
-  "footer_secondary": "Send a brief",
+  "footer_heading": "Got a launch\ncoming up?",
   "nav_cta": "Book a free call",
-  "nav_cta_short": "Free call"
+  "nav_cta_short": "Free call",
+  "cta_label": "Free 30-minute call",
+  "cta_heading": "Let's talk.",
+  "cta_note": "Or write to us below.",
+  "footer_status": "Booking new projects · replies within a day",
+  "footer_tagline": "Branding · Packaging · D2C & FMCG"
 }

@@ -47,7 +47,7 @@ collections:
     fields:
       - { name: title, label: Project name, widget: string, hint: "Also sets the page address, e.g. Slow Leaf → /work/slow-leaf/" }
       - { name: order, label: Order, widget: number, value_type: int, default: 99, hint: "1 appears first." }
-      - { name: concept, label: Self-initiated concept, widget: boolean, default: false, hint: "On: labelled as a brand concept. Off: real client work, listed first and laid out as problem → one idea → system → result." }
+      - { name: concept, label: Brand concept, widget: boolean, default: false, hint: "On: labelled Brand concept, with The brief and The aim. Off: labelled Client project, with The challenge and The outcome. Client work is listed first." }
       - { name: show_on_home, label: Show on home page, widget: boolean, default: false }
       - { name: draft, label: Hide from site, widget: boolean, default: false, required: false }
       - { name: sector, label: Sector, widget: string, hint: "Short, e.g. Single-estate tea" }
@@ -57,9 +57,9 @@ collections:
         multiple: true
         options: ["Brand strategy", "Branding", "Packaging design"]
       - { name: tagline, label: One-line summary, widget: string, hint: "The sentence that sells the idea. Shown on cards and at the top of the case study." }
-      - { name: challenge, label: The problem / brief, widget: text }
+      - { name: challenge, label: The challenge / brief, widget: text, hint: "The first sentence is shown large." }
       - { name: insight, label: The insight, widget: text, required: false }
-      - { name: idea, label: The one idea, widget: text }
+      - { name: idea, label: The idea, widget: text, hint: "The first sentence is shown large." }
       - { name: outcome, label: The result / aim, widget: text, hint: "One strong sentence. For client work, lead with the measurable change." }
       - { name: deliverables, label: The system (what we made), widget: list, field: { name: item, label: Item, widget: string } }
       - { name: cover_image, label: Cover image (landscape), widget: image, hint: "Main image: home card, case study hero, next-project link. Landscape, about 2000×1125." }
@@ -110,19 +110,25 @@ collections:
         file: content/home.json
         fields:
           - { name: seo_title, label: Browser and Google title, widget: string }
-          - { name: hero_heading, label: Hero heading, widget: text }
+          - name: hero_words
+            label: Hero words
+            hint: "The big moving words. Clicking the hero cycles through them. Keep each line short."
+            widget: list
+            summary: "{{top}} / {{bottom}}"
+            fields:
+              - { name: top, label: Top line, widget: string }
+              - { name: bottom, label: Bottom line, widget: string }
           - { name: hero_text, label: Hero text, widget: text }
-          - { name: hero_label, label: Corner label, widget: string }
-          - { name: manifesto_heading, label: Statement heading, widget: text }
-          - { name: manifesto_text, label: Statement text, widget: text }
-          - { name: featured_count, label: Projects on home page, widget: number, value_type: int, min: 1, max: 8, default: 4 }
-          - { name: all_work_label, label: Label above "All work", widget: string }
-          - { name: services_label, label: Services label, widget: string }
-          - { name: services_heading, label: Services heading, widget: text }
-          - { name: services_more_heading, label: Closing row heading, widget: string, hint: "The last row under the services, linking to the Services page." }
-          - { name: services_more_text, label: Closing row text, widget: text }
-          - { name: services_link, label: Link to the Services page, widget: string, hint: "The services themselves are edited in Pages → Services." }
-          - { name: faq_label, label: FAQ label, widget: string }
+          - { name: hero_corner, label: Hero bottom-right line, widget: string }
+          - { name: studio_label, label: "Studio: label", widget: string }
+          - { name: studio_lines, label: "Studio: lines", widget: list, hint: "Shown one after another as visitors scroll. Three works best.", field: { name: line, label: Line, widget: string } }
+          - { name: ticker, label: Moving ticker words, widget: list, field: { name: word, label: Word, widget: string } }
+          - { name: work_heading, label: "Work: heading", widget: string, hint: "Projects marked Show on home page are listed here." }
+          - { name: work_link, label: "Work: link to all work", widget: string }
+          - { name: services_heading, label: "What we do: heading", widget: string, hint: "The three cards come from Pages → Services." }
+          - { name: services_note, label: "What we do: note", widget: string }
+          - { name: process_heading, label: "Process: heading", widget: string, hint: "The steps come from Pages → Services." }
+          - { name: faq_label, label: FAQ label, widget: string, hint: "The FAQ is shown on the Services page." }
           - { name: faq_heading, label: FAQ heading, widget: text }
           - name: faq
             label: FAQ
@@ -153,6 +159,8 @@ collections:
               - { name: text, label: Description, widget: text }
               - { name: includes, label: What's included, widget: list, field: { name: item, label: Item, widget: string } }
               - { name: timeline, label: Typical timeline, widget: string }
+              - { name: card_text, label: Home card text, widget: text, hint: "Short text on the home page card." }
+              - { name: tags, label: Home card tags, widget: list, field: { name: tag, label: Tag, widget: string } }
           - { name: together_note, label: Note under the services, widget: text, required: false }
           - { name: process_label, label: Process label, widget: string }
           - { name: process_heading, label: Process heading, widget: text }
@@ -163,11 +171,9 @@ collections:
             fields:
               - { name: title, label: Step, widget: string }
               - { name: text, label: What happens, widget: text }
+              - { name: note, label: Small note next to the number, widget: string, required: false, hint: "e.g. Free" }
               - { name: get, label: What you get, widget: string }
-          - { name: call_label, label: Free call band label, widget: string, hint: "The blue band at the end of Services and Home." }
-          - { name: call_heading, label: Free call band heading, widget: text }
-          - { name: call_text, label: Free call band text, widget: text }
-          - { name: call_button, label: Free call band button, widget: string }
+              - { name: time, label: How long, widget: string }
 
       - name: book
         label: Book a free call
@@ -196,14 +202,11 @@ collections:
           - { name: story, label: Studio story, widget: list, field: { name: paragraph, label: Paragraph, widget: text } }
           - { name: founder_name, label: Founder name, widget: string }
           - { name: founder_role, label: Founder role, widget: string }
-          - { name: founder_photo, label: Founder photo, widget: image, required: false, hint: "Portrait. Leave empty to show the blue shape." }
+          - { name: founder_photo, label: Founder photo, widget: image, required: false, hint: "Square portrait. Optional." }
           - { name: audience_label, label: Audience label, widget: string }
           - { name: audiences, label: Who we work with, widget: list, summary: "{{title}}", fields: [{ name: title, label: Title, widget: string }, { name: text, label: Text, widget: text }] }
           - { name: principles_label, label: Principles label, widget: string }
           - { name: principles, label: How we think, widget: list, summary: "{{title}}", fields: [{ name: title, label: Title, widget: string }, { name: text, label: Text, widget: text }] }
-          - { name: process_label, label: Process label, widget: string }
-          - { name: process_heading, label: Process heading, widget: string }
-          - { name: process, label: Process steps, widget: list, summary: "{{title}}", fields: [{ name: title, label: Step, widget: string }, { name: text, label: Text, widget: text }] }
 
       - name: work
         label: Work page
@@ -234,10 +237,10 @@ collections:
           - { name: lead, label: Intro, widget: text }
           - { name: needs_label, label: Services question, widget: string }
           - { name: needs, label: Service options, widget: list, field: { name: option, label: Option, widget: string } }
-          - { name: skus_label, label: SKU question, widget: string }
-          - { name: skus, label: SKU options, widget: list, field: { name: option, label: Option, widget: string } }
-          - { name: timeline_label, label: Timeline question, widget: string }
-          - { name: timeline, label: Timeline options, widget: list, field: { name: option, label: Option, widget: string } }
+          - { name: skus_label, label: SKU question, widget: string, required: false, hint: "Optional. Leave the options empty to hide this question." }
+          - { name: skus, label: SKU options, widget: list, required: false, field: { name: option, label: Option, widget: string } }
+          - { name: timeline_label, label: Timeline question, widget: string, required: false, hint: "Optional. Leave the options empty to hide this question." }
+          - { name: timeline, label: Timeline options, widget: list, required: false, field: { name: option, label: Option, widget: string } }
           - { name: message_placeholder, label: Message hint, widget: string }
           - { name: button, label: Button text, widget: string }
           - { name: form_note, label: Note under the button, widget: string }
@@ -263,9 +266,11 @@ collections:
           - { name: instagram, label: Instagram link, widget: string, required: false, hint: "Leave empty to hide." }
           - { name: linkedin, label: LinkedIn link, widget: string, required: false, hint: "Leave empty to hide." }
           - { name: behance, label: Behance link, widget: string, required: false, hint: "Leave empty to hide." }
-          - { name: footer_label, label: Footer label, widget: string }
+          - { name: cta_label, label: "Closing band: label", widget: string }
+          - { name: cta_heading, label: "Closing band: heading", widget: string }
+          - { name: cta_note, label: "Closing band: note next to the button", widget: string }
           - { name: footer_heading, label: Footer heading, widget: text }
+          - { name: footer_status, label: Footer availability line, widget: string }
+          - { name: footer_tagline, label: Footer bottom line, widget: string }
           - { name: nav_cta, label: Top menu button, widget: string, hint: "Links to the free call booking page." }
           - { name: nav_cta_short, label: Top menu button on phones, widget: string }
-          - { name: footer_button, label: Footer main button, widget: string, hint: "Links to the free call booking page." }
-          - { name: footer_secondary, label: Footer second button, widget: string, hint: "Links to the contact page." }
