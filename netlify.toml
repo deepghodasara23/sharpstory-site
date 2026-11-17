@@ -18,6 +18,17 @@
     # Netlify's "Powered by Netlify" badge script from loading.
     Content-Security-Policy = "script-src 'unsafe-inline' https://unpkg.com https://sharpstory.studio/assets/ https://sharpstory.studio/js/ https://*.netlify.app/assets/ https://*.netlify.app/js/; worker-src 'self' blob:"
 
+# Private packaging gallery: shared by link only, kept out of search engines.
+[[headers]]
+  for = "/selected/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow, noarchive"
+
+[[headers]]
+  for = "/selected/packaging/img/*"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"
+
 [[headers]]
   for = "/admin/*"
   [headers.values]
