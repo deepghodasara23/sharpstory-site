@@ -683,7 +683,7 @@ if HOLD_ON:
              '/*  /:splat  200!  Cookie=ss_preview']
     rules += ['%s/*  %s/:splat  200!' % (k, k) for k in keep]
     rules += ['/%s  /%s  200!' % (f, f) for f in ('favicon.svg', 'apple-touch-icon.png', 'og.png', 'robots.txt', 'sitemap.xml')]
-    rules += ['/shelf-check/*  /book/  301!', '/  /hello/index.html  200!', '/*  /  302!']
+    rules += ['/shelf-check/*  /book/  301!', '/*  /hello/index.html  200!']
     with open(os.path.join(OUT, '_redirects'), 'w') as f:
         f.write('\n'.join(rules) + '\n')
 
