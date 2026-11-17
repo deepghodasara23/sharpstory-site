@@ -13,7 +13,7 @@
 <meta property="og:image" content="https://sharpstory.studio/selected/packaging/cover.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#f1f0eb">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&display=swap" rel="stylesheet">
@@ -261,8 +261,12 @@ const ROWS = [
   {sp:1, items:[["four-square","four"]]},
 ];
 
-const onSite = /sharpstory\.studio$|netlify\.app$/.test(location.hostname);
-const IMG = onSite ? "/selected/packaging/img/" : "img/";
+/* paths work wherever this folder is hosted */
+let BASE = location.pathname;
+if (!BASE.endsWith("/")) BASE = /\.[a-z0-9]+$/i.test(BASE) ? BASE.replace(/[^/]*$/, "") : BASE + "/";
+const IMG = BASE + "img/";
+const onSite = location.protocol !== "file:";
+const mainSite = /^(www\.)?sharpstory\.studio$|netlify\.app$/.test(location.hostname);
 const $ = id => document.getElementById(id);
 const gal = $("gal"), idx = $("idx"), grid = $("grid");
 const ALL = [];
@@ -282,7 +286,7 @@ document.querySelectorAll(".hero .w").forEach((w, wi) => {
 /* smooth scroll (uses the site's own Lenis when live) */
 let lenis = null;
 if (onSite && !reduce) {
-  const s = document.createElement("script"); s.src = "/js/lenis.min.js";
+  const s = document.createElement("script"); s.src = mainSite ? "/js/lenis.min.js" : BASE + "lenis.min.js";
   s.onload = () => { if (!window.Lenis) return; lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
     const raf = t => { lenis.raf(t); requestAnimationFrame(raf); }; requestAnimationFrame(raf); };
   document.head.appendChild(s);
