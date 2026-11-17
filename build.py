@@ -5,7 +5,7 @@ Everything editable lives in content/ (edited through /admin). This script turns
 into static pages in dist/. It uses only the Python standard library, so it runs on
 Netlify with no install step:  python3 build.py
 """
-import glob, html, json, os, re, shutil
+import datetime, glob, html, json, os, re, shutil
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(ROOT, 'dist')
@@ -600,7 +600,31 @@ def page(path, view, title_, desc, inner, noindex=False, extra_ld='', end=True, 
             % (head, VER, view, sym(), rp, sym(), nav, t(CTA), mnav, at(EMAIL), t(EMAIL), msoc, inner, end_html(end) if end is not None else '', extra, VER))
 
 
+HOLD_ON = bool(S.get('holding_page'))
+PREVIEW_PILL = ('<script>(function(){if(document.cookie.indexOf("ss_preview=")<0)return;var a=document.createElement("a");a.href="/preview/";'
+                'a.textContent="Preview mode \u00b7 only you see this";a.style.cssText="position:fixed;z-index:300;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));'
+                'transform:translateX(-50%);padding:10px 16px;border-radius:99px;background:#0c0c0d;color:#fff;font:600 12px/1 system-ui,sans-serif;letter-spacing:.06em;'
+                'text-transform:uppercase;box-shadow:0 10px 30px -10px #0006";document.body.appendChild(a)})()</script>')
+
+
+PREVIEW_PAGE = '''<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex"><title>Preview — Sharp Story</title><link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&display=swap" rel="stylesheet">
+<style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#f1f0eb;color:#0c0c0d;font:400 17px/1.5 "Bricolage Grotesque",system-ui,sans-serif;padding:24px}
+main{max-width:520px}h1{font-weight:800;font-stretch:76%%;text-transform:uppercase;font-size:clamp(48px,10vw,88px);line-height:.9;margin:0 0 18px}
+p{margin:0 0 14px;color:#0c0c0d99}.b{display:inline-flex;align-items:center;height:52px;padding:0 24px;border-radius:99px;background:#1F3BFF;color:#fff;font-weight:600;border:0;font-size:16px;cursor:pointer;margin:12px 10px 0 0}
+.b.o{background:none;color:#0c0c0d;box-shadow:inset 0 0 0 1.5px #0c0c0d}b{color:#0c0c0d}</style></head><body><main>
+<h1>Preview</h1><p>The holding page is <b>%s</b> for visitors. Preview mode lets this browser see the full site while you check content. Nobody else sees it.</p>
+<p id="state"></p><button class="b" id="on">View the full site</button><button class="b o" id="off">Turn preview off</button></main>
+<script>var s=document.getElementById("state");function has(){return document.cookie.indexOf("ss_preview=")>-1}
+s.textContent=has()?"Preview mode is on in this browser.":"Preview mode is off in this browser.";
+document.getElementById("on").onclick=function(){document.cookie="ss_preview=1; path=/; max-age=2592000; secure; samesite=lax";location.href="/"};
+document.getElementById("off").onclick=function(){document.cookie="ss_preview=; path=/; max-age=0; secure; samesite=lax";location.href="/"};</script></body></html>'''
+
+
 def write(path, h):
+    if HOLD_ON:
+        h = h.replace('</body>', PREVIEW_PILL + '</body>', 1)
     d = OUT + path
     os.makedirs(d, exist_ok=True)
     with open(os.path.join(d, 'index.html'), 'w', encoding='utf-8') as f:
@@ -632,6 +656,37 @@ for i, a in enumerate(ARTICLES):
 with open(os.path.join(OUT, '404.html'), 'w', encoding='utf-8') as f:
     f.write(page('/404/', 'notfound', 'Page not found — Sharp Story', S['seo_description'], notfound_html(), noindex=True, end=False))
 
+# ---------------------------------------------------------------- holding page
+# While "holding_page" is on in Settings, visitors see /hello/ at the home address and every
+# other page sends them there. The booking page, the content manager and the assets stay open.
+# Visiting /preview/ sets a cookie that shows the full site to that browser only.
+HOLD = load(C('holding.json'))
+_lines = [x for x in (HOLD.get('heading') or 'Almost\nsharp.').split('\n')]
+_lines_html = '<br>'.join(t(x[:-1]) + '<span class="dot">.</span>' if x.endswith('.') else t(x) for x in _lines)
+_hold = open(os.path.join(ROOT, 'src', 'holding.html'), encoding='utf-8').read()
+for k, v in {'{{TITLE}}': t('Sharp Story — Branding and packaging for D2C and FMCG brands'), '{{DESC}}': t(S['seo_description']),
+             '{{DOMAIN}}': DOMAIN, '{{SYM}}': sym(), '{{STATUS}}': t(HOLD.get('status')), '{{LABEL}}': t(HOLD.get('label')),
+             '{{H1_LINES}}': _lines_html, '{{H1_PLAIN}}': t(' '.join(_lines)), '{{TEXT}}': t(HOLD.get('text')), '{{TEXT2}}': t(HOLD.get('text_2')),
+             '{{BUTTON}}': t(HOLD.get('button') or 'Book a free call'), '{{EMAIL}}': t(EMAIL), '{{SLUG}}': t(HOLD.get('slug')),
+             '{{DATE}}': datetime.date.today().strftime('%d.%m.%Y'),
+             '{{SOCIALS}}': ''.join('<a href="%s" target="_blank" rel="noopener">%s</a>' % (at(u), lab) for lab, u in SOCIALS)}.items():
+    _hold = _hold.replace(k, v)
+os.makedirs(os.path.join(OUT, 'hello'), exist_ok=True)
+with open(os.path.join(OUT, 'hello', 'index.html'), 'w', encoding='utf-8') as f:
+    f.write(_hold)
+os.makedirs(os.path.join(OUT, 'preview'), exist_ok=True)
+with open(os.path.join(OUT, 'preview', 'index.html'), 'w', encoding='utf-8') as f:
+    f.write(PREVIEW_PAGE % ('on' if HOLD_ON else 'off'))
+if HOLD_ON:
+    keep = ['/admin', '/book', '/preview', '/hello', '/assets', '/js', '/img']
+    rules = ['# Generated by build.py while the holding page is on (Settings).',
+             '/*  /:splat  200!  Cookie=ss_preview']
+    rules += ['%s/*  %s/:splat  200!' % (k, k) for k in keep]
+    rules += ['/%s  /%s  200!' % (f, f) for f in ('favicon.svg', 'apple-touch-icon.png', 'og.png', 'robots.txt', 'sitemap.xml')]
+    rules += ['/shelf-check/*  /book/  301!', '/  /hello/index.html  200!', '/*  /  302!']
+    with open(os.path.join(OUT, '_redirects'), 'w') as f:
+        f.write('\n'.join(rules) + '\n')
+
 shutil.copytree(os.path.join(ROOT, 'static'), OUT, dirs_exist_ok=True)
 shutil.copytree(os.path.join(ROOT, 'admin'), os.path.join(OUT, 'admin'), dirs_exist_ok=True)
 os.makedirs(os.path.join(OUT, 'assets'), exist_ok=True)
@@ -639,8 +694,8 @@ for name, body in (('site.css', CSS), ('site.js', JS)):
     with open(os.path.join(OUT, 'assets', name), 'w', encoding='utf-8') as f:
         f.write(body)
 with open(os.path.join(OUT, 'robots.txt'), 'w') as f:
-    f.write('User-agent: *\nAllow: /\nDisallow: /admin/\nSitemap: %s/sitemap.xml\n' % DOMAIN)
+    f.write('User-agent: *\nAllow: /\nDisallow: /admin/\nDisallow: /preview/\nDisallow: /hello/\nSitemap: %s/sitemap.xml\n' % DOMAIN)
 with open(os.path.join(OUT, 'sitemap.xml'), 'w') as f:
     f.write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-            + ''.join('  <url><loc>%s%s</loc></url>\n' % (DOMAIN, u) for u in urls) + '</urlset>\n')
-print('Built %d pages: %d projects, %d articles' % (len(urls), len(PROJECTS), len(ARTICLES)))
+            + ''.join('  <url><loc>%s%s</loc></url>\n' % (DOMAIN, u) for u in (['/', '/book/'] if HOLD_ON else urls)) + '</urlset>\n')
+print('Built %d pages: %d projects, %d articles. Holding page: %s' % (len(urls), len(PROJECTS), len(ARTICLES), 'ON' if HOLD_ON else 'off'))
