@@ -1,11 +1,14 @@
 # Sharp Story content manager (Sveltia CMS)
 # Everything here edits files in the content/ folder of the GitHub repository.
-# Publishing commits the change; Netlify rebuilds the site in about a minute.
+# Publishing commits the change; the site rebuilds in about a minute.
 
 backend:
   name: github
   repo: deepghodasara23/sharpstory-site
   branch: main
+  # Sign-in goes through Netlify's GitHub login, which works wherever the site is hosted.
+  base_url: https://api.netlify.com
+  site_domain: sharpstory.netlify.app
   commit_messages:
     create: "Add {{collection}}: {{slug}}"
     update: "Update {{collection}}: {{slug}}"
@@ -271,7 +274,7 @@ collections:
         label: Contact details, links and footer
         file: content/settings.json
         fields:
-          - { name: holding_page, label: Show the 'in progress' page to visitors, widget: boolean, default: false, hint: "On: visitors see only the in-progress page (the booking page still works). Open sharpstory.studio/preview/ to see the full site yourself. Turn off when the site is ready." }
+          - { name: holding_page, label: Show the 'in progress' page to visitors, widget: boolean, default: false, hint: "On: visitors see only the in-progress page (the booking page and the private gallery still work). Turn off to show the full site." }
           - { name: site_name, label: Studio name, widget: string }
           - { name: domain, label: Website address, widget: string, hint: "Used for Google and link previews. Change only if the domain changes." }
           - { name: seo_description, label: Default Google description, widget: text }

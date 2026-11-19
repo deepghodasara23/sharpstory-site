@@ -131,7 +131,8 @@ if(bf){var pick=function(id){var b=D.querySelector('#'+id+' .chip.on');return b?
   var n=pick('need');$('fneeds').value=n;$('fskus').value=pick('skus');$('ftime').value=pick('tml');
   var q=new URLSearchParams(new FormData(bf)).toString(),btn=$('snd'),em=bf.dataset.email;btn.disabled=true;btn.firstChild.textContent='Sending… ';
   var mail=function(){var body='Name: '+$('fn').value+'\nEmail: '+$('fe').value+'\nCompany: '+$('fc').value+'\nNeed: '+n+($('fskus').value?'\nSKUs: '+$('fskus').value:'')+($('ftime').value?'\nLaunch: '+$('ftime').value:'')+'\n\n'+$('fm').value;location.href='mailto:'+em+'?subject='+encodeURIComponent('New '+(n&&n!=='Not sure yet'?n:'project')+' brief'+($('fc').value?' - '+$('fc').value:''))+'&body='+encodeURIComponent(body)};
-  fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:q}).then(function(r){if(!r.ok)throw 0;$('ok').classList.add('on');btn.firstChild.textContent='Sent ';Q('input:not([type=hidden]),textarea',bf).forEach(function(i){i.value='';i.closest('.fld')&&i.closest('.fld').classList.remove('f')});Q('.chip.on',bf).forEach(function(b){b.classList.remove('on')})})
+  var onN=/netlify\.app$/.test(location.hostname),url=onN?'/':'https://sharpstory.netlify.app/';
+  fetch(url,{method:'POST',mode:onN?'same-origin':'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:q}).then(function(r){if(onN&&!r.ok)throw 0;$('ok').classList.add('on');btn.firstChild.textContent='Sent ';Q('input:not([type=hidden]),textarea',bf).forEach(function(i){i.value='';i.closest('.fld')&&i.closest('.fld').classList.remove('f')});Q('.chip.on',bf).forEach(function(b){b.classList.remove('on')})})
   .catch(function(){btn.disabled=false;btn.firstChild.textContent=btn.dataset.l+' ';mail()})})}
 
 /* ---------- booking calendar ---------- */

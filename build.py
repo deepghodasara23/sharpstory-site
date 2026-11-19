@@ -693,6 +693,18 @@ os.makedirs(os.path.join(OUT, 'assets'), exist_ok=True)
 for name, body in (('site.css', CSS), ('site.js', JS)):
     with open(os.path.join(OUT, 'assets', name), 'w', encoding='utf-8') as f:
         f.write(body)
+if HOLD_ON and os.environ.get('VERCEL'):
+    # Vercel has no _redirects file, so the hidden pages are replaced with the holding page itself.
+    open_paths = tuple(k + '/' for k in keep)
+    for root, dirs, files in os.walk(OUT):
+        rel = '/' + os.path.relpath(root, OUT).replace(os.sep, '/').strip('.').strip('/') + '/'
+        rel = '/' if rel == '//' else rel
+        if rel.startswith(open_paths):
+            continue
+        for fn in files:
+            if fn in ('index.html', '404.html'):
+                with open(os.path.join(root, fn), 'w', encoding='utf-8') as f:
+                    f.write(_hold)
 with open(os.path.join(OUT, 'robots.txt'), 'w') as f:
     f.write('User-agent: *\nAllow: /\nDisallow: /admin/\nDisallow: /preview/\nDisallow: /hello/\nSitemap: %s/sitemap.xml\n' % DOMAIN)
 with open(os.path.join(OUT, 'sitemap.xml'), 'w') as f:
