@@ -6,8 +6,7 @@
   "outputDirectory": "dist",
   "trailingSlash": true,
   "redirects": [
-    { "source": "/shelf-check", "destination": "/book/", "permanent": true },
-    { "source": "/shelf-check/:path*", "destination": "/book/", "permanent": true }
+    { "source": "/shelf-check(.*)", "destination": "/book/", "permanent": true }
   ],
   "headers": [
     {
